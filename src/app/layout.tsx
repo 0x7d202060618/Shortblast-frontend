@@ -2,7 +2,7 @@ import "@/styles/globals.css";
 import type { Metadata } from "next";
 import { Inter as FontSans } from "next/font/google";
 
-import { cn } from "@/lib/utils";
+import { cn } from "@/utils/functions";
 import { ThemeProvider } from "@/components/theme-provider";
 import Navbar from "@/components/Navbar";
 import WalletConnectProvider from "@/contexts/WalletConnectProvider";

@@ -3,7 +3,7 @@
 import React, { MouseEventHandler, type HTMLAttributes } from "react";
 
 import { cva, type VariantProps } from "class-variance-authority";
-import { twMerge } from "tailwind-merge";
+import { cn } from "@/utils/functions";
 
 // react icons
 import {
@@ -166,16 +166,13 @@ export default function Icon({
   return (
     <div
       onClick={onClick}
-      className={twMerge(
+      className={cn(
         iconVariants({ variant, round, padding, withBorder }),
         onClick && "cursor-pointer",
         className
       )}
     >
-      <NextIcon
-        {...props}
-        className={twMerge("w-6 h-6", iconVariants({ size }))}
-      />
+      <NextIcon {...props} className={cn("w-6 h-6", iconVariants({ size }))} />
     </div>
   );
 }

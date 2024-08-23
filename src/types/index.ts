@@ -5,3 +5,14 @@ export interface ExtraTWClassProps {
 }
 
 export type ComponentProps = PropsWithChildren<ExtraTWClassProps>;
+
+export type FormatNumberOptions = {
+  prefix?: string;
+  suffix?: string;
+  thousandSeparator?: boolean | string;
+  decimalScale?: number;
+  isPercentage?: boolean;
+  truncateTinyValue?: boolean;
+  useMillify?: boolean;
+  placeholder?: string;
+};

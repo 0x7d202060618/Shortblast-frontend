@@ -33,7 +33,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { cn } from "@/lib/utils";
+import { cn } from "@/utils/functions";
 import { zodResolver } from "@hookform/resolvers/zod";
 import TokenButton from "./token.button";
 import { TokenMetadata } from "@/types/token";
@@ -162,7 +162,7 @@ const TokenForm = () => {
     );
 
     // Token Mint
-    const associatedTokenAccountAddress = getAssociatedTokenAddressSync(mintKeypair.publicKey, publicKey);
+    const associatedTokenAccountAddress = getAssociatedTokenAddressSync(mintKeypair.publicKey, publicKey!);
     const amount = new BN(100);
     const mintTransaction = await program.methods
     .mintToken(amount)
