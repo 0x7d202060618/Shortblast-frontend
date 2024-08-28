@@ -12,20 +12,11 @@ export interface ImageProps extends ComponentProps, NextImageProps {
   fill?: boolean;
 }
 
-export default function Image({
-  fill = false,
-  className,
-  ...props
-}: ImageProps) {
+export default function Image({ fill = false, className, ...props }: ImageProps) {
   if (fill) {
     return (
       <div className={cn("relative overflow-hidden", className)}>
-        <NextImage
-          fill
-          sizes="100vw"
-          style={{ objectFit: "cover" }}
-          {...props}
-        />
+        <NextImage fill sizes="100vw" style={{ objectFit: "cover" }} {...props} />
       </div>
     );
   }

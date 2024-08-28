@@ -46,11 +46,7 @@ const columns: ColumnDef<PairData>[] = [
     header: "PAIR INFO",
     cell: ({ row }) => (
       <div className="flex gap-4 items-center">
-        <TokenLogo
-          imageUrl={row.original.token.image}
-          alt={row.original.token.name}
-          size={10}
-        />
+        <TokenLogo imageUrl={row.original.token.image} alt={row.original.token.name} size={10} />
         <div className="flex flex-col gap-1">
           <div className="flex gap-1">
             <Text variant="lg" className="font-bold">
@@ -60,9 +56,7 @@ const columns: ColumnDef<PairData>[] = [
               / SOL
             </Text>
           </div>
-          <Text className="text-gray-600">
-            {truncateAddress(row.original.token.address)}
-          </Text>
+          <Text className="text-gray-600">{truncateAddress(row.original.token.address)}</Text>
         </div>
       </div>
     ),
@@ -71,26 +65,18 @@ const columns: ColumnDef<PairData>[] = [
     id: "current_price",
     header: "PRICE",
     cell: ({ row }) => (
-      <CurrencyNumber
-        variant="lg"
-        decimalScale={10}
-        value={row.original.currentPrice}
-      />
+      <CurrencyNumber variant="lg" decimalScale={10} value={row.original.currentPrice} />
     ),
   },
   {
     id: "liquidity",
     header: "LIQUIDITY",
-    cell: ({ row }) => (
-      <CurrencyNumber variant="lg" value={row.original.liquidity} />
-    ),
+    cell: ({ row }) => <CurrencyNumber variant="lg" value={row.original.liquidity} />,
   },
   {
     id: "market_cap",
     header: "MCAP",
-    cell: ({ row }) => (
-      <CurrencyNumber variant="lg" value={row.original.liquidity} />
-    ),
+    cell: ({ row }) => <CurrencyNumber variant="lg" value={row.original.liquidity} />,
   },
 ];
 
@@ -116,9 +102,7 @@ export default function Trading() {
                   <TableHead
                     key={header.id}
                     className={cn(
-                      index === 0
-                        ? "w-auto"
-                        : "w-[120px] md:w-[140px] lg:w-[180px]",
+                      index === 0 ? "w-auto" : "w-[120px] md:w-[140px] lg:w-[180px]",
                       index === headerGroup.headers.length - 1 ? "pr-8" : "",
                       "py-4"
                     )}
@@ -127,17 +111,12 @@ export default function Trading() {
                     <div
                       className={cn(
                         "flex items-center gap-2",
-                        header.column.getCanSort()
-                          ? "cursor-pointer select-none"
-                          : ""
+                        header.column.getCanSort() ? "cursor-pointer select-none" : ""
                       )}
                     >
                       {header.isPlaceholder
                         ? null
-                        : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}
+                        : flexRender(header.column.columnDef.header, header.getContext())}
                       {header.column.getCanSort() ? (
                         <div className="flex flex-col -space-y-[2px]">
                           <Icon
@@ -147,8 +126,8 @@ export default function Trading() {
                               header.column.getIsSorted() === false
                                 ? "opacity-10"
                                 : header.column.getIsSorted() !== "asc"
-                                ? "opacity-40"
-                                : ""
+                                  ? "opacity-40"
+                                  : ""
                             )}
                           />
                           <Icon
@@ -158,8 +137,8 @@ export default function Trading() {
                               header.column.getIsSorted() === false
                                 ? "opacity-10"
                                 : header.column.getIsSorted() !== "desc"
-                                ? "opacity-30"
-                                : ""
+                                  ? "opacity-30"
+                                  : ""
                             )}
                           />
                         </div>
@@ -177,20 +156,14 @@ export default function Trading() {
                   <TableRow key={row.id} className="cursor-pointer">
                     {row.getVisibleCells().map((cell) => (
                       <TableCell key={cell.id} className="p-4">
-                        {flexRender(
-                          cell.column.columnDef.cell,
-                          cell.getContext()
-                        )}
+                        {flexRender(cell.column.columnDef.cell, cell.getContext())}
                       </TableCell>
                     ))}
                   </TableRow>
                 ))
               ) : (
                 <TableRow>
-                  <TableCell
-                    colSpan={columns.length}
-                    className="h-52 text-center"
-                  >
+                  <TableCell colSpan={columns.length} className="h-52 text-center">
                     <span>No pools available</span>
                   </TableCell>
                 </TableRow>

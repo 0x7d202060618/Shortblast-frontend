@@ -2,11 +2,8 @@
 
 import React, { useState } from "react";
 import Image from "next/image";
-import { getAssociatedTokenAddressSync } from '@solana/spl-token';
-import {
-  Keypair,
-  PublicKey,
-} from "@solana/web3.js";
+import { getAssociatedTokenAddressSync } from "@solana/spl-token";
+import { Keypair, PublicKey } from "@solana/web3.js";
 import { Program, BN } from "@coral-xyz/anchor";
 
 import { useFieldArray, useForm } from "react-hook-form";
@@ -130,8 +127,8 @@ const TokenForm = () => {
     //   mintKeypair = Keypair.generate();
     // }
     console.log(mintKeypair.publicKey.toString());
-    const {name, symbol} = values
-    console.log(name, symbol, metadataUrl)
+    const { name, symbol } = values;
+    console.log(name, symbol, metadataUrl);
     const transaction = await program.methods
       .createToken(name, symbol, metadataUrl)
       .accountsStrict({
@@ -146,37 +143,34 @@ const TokenForm = () => {
           new PublicKey("metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s")
         )[0],
         tokenProgram: new PublicKey("TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"),
-        tokenMetadataProgram: new PublicKey(
-          "metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s"
-        ),
-        systemProgram: new PublicKey("11111111111111111111111111111111"),  
-        rent:  new PublicKey("SysvarRent111111111111111111111111111111111")
+        tokenMetadataProgram: new PublicKey("metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s"),
+        systemProgram: new PublicKey("11111111111111111111111111111111"),
+        rent: new PublicKey("SysvarRent111111111111111111111111111111111"),
       })
       .transaction();
 
     const transactionSignature = await sendTransaction(transaction, connection, {
       signers: [mintKeypair],
     });
-    console.log(
-      `View on explorer: https://solana.fm/tx/${transactionSignature}?cluster=devnet`
-    );
+    console.log(`View on explorer: https://solana.fm/tx/${transactionSignature}?cluster=devnet`);
 
     // Token Mint
-    const associatedTokenAccountAddress = getAssociatedTokenAddressSync(mintKeypair.publicKey, publicKey!);
+    const associatedTokenAccountAddress = getAssociatedTokenAddressSync(
+      mintKeypair.publicKey,
+      publicKey!
+    );
     const amount = new BN(100);
     const mintTransaction = await program.methods
-    .mintToken(amount)
-    .accountsPartial({
-      mintAuthority: publicKey,
-      recipient: publicKey,
-      mintAccount: mintKeypair.publicKey,
-      associatedTokenAccount: associatedTokenAccountAddress,
-    })
-    .transaction();
-    const txsig = await sendTransaction(mintTransaction, connection,);
-    console.log(
-      `View on explorer: https://solana.fm/tx/${txsig}?cluster=devnet`
-    );
+      .mintToken(amount)
+      .accountsPartial({
+        mintAuthority: publicKey,
+        recipient: publicKey,
+        mintAccount: mintKeypair.publicKey,
+        associatedTokenAccount: associatedTokenAccountAddress,
+      })
+      .transaction();
+    const txsig = await sendTransaction(mintTransaction, connection);
+    console.log(`View on explorer: https://solana.fm/tx/${txsig}?cluster=devnet`);
   }
 
   async function handleImageChange(values: File[] | null) {
@@ -311,10 +305,7 @@ const TokenForm = () => {
                     <FileInput>
                       <FileUploaderContent className="h-36 bg-white bg-opacity-10">
                         {field.value && (
-                          <FileUploaderItem
-                            index={0}
-                            className="p-0 !h-full !w-full"
-                          >
+                          <FileUploaderItem index={0} className="p-0 !h-full !w-full">
                             <Image
                               src={URL.createObjectURL(field.value)}
                               alt={field.value.name}
@@ -338,19 +329,14 @@ const TokenForm = () => {
                   <FormLabel>Banner</FormLabel>
                   <FileUploader
                     value={field.value ? [field.value] : null}
-                    onValueChange={(values) =>
-                      field.onChange(values ? values[0] : null)
-                    }
+                    onValueChange={(values) => field.onChange(values ? values[0] : null)}
                     dropzoneOptions={dropZoneConfig}
                     className="relative space-y-1 max-w-full"
                   >
                     <FileInput>
                       <FileUploaderContent className="h-36 bg-white bg-opacity-10">
                         {field.value && (
-                          <FileUploaderItem
-                            index={0}
-                            className="p-0 !h-full !w-full"
-                          >
+                          <FileUploaderItem index={0} className="p-0 !h-full !w-full">
                             <Image
                               src={URL.createObjectURL(field.value)}
                               alt={field.value.name}
@@ -374,9 +360,7 @@ const TokenForm = () => {
                 name={`urls.${index}.value`}
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className={cn(index !== 0 && "sr-only")}>
-                      URLs
-                    </FormLabel>
+                    <FormLabel className={cn(index !== 0 && "sr-only")}>URLs</FormLabel>
                     <FormDescription className={cn(index !== 0 && "sr-only")}>
                       Add links to your website, blog, or social media profiles.
                     </FormDescription>
@@ -422,8 +406,7 @@ const TokenForm = () => {
             htmlFor="terms"
             className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-pointer"
           >
-            I agree to the Moonshot{" "}
-            <span className="underline">Terms and Conditions</span> and{" "}
+            I agree to the Moonshot <span className="underline">Terms and Conditions</span> and{" "}
             <span className="underline">Token Profile Policy</span>.
           </label>
         </div>

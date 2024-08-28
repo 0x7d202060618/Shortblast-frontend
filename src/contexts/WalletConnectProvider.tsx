@@ -3,10 +3,7 @@
 import React, { useMemo } from "react";
 
 import { WalletAdapterNetwork } from "@solana/wallet-adapter-base";
-import {
-  ConnectionProvider,
-  WalletProvider,
-} from "@solana/wallet-adapter-react";
+import { ConnectionProvider, WalletProvider } from "@solana/wallet-adapter-react";
 import { WalletModalProvider } from "@solana/wallet-adapter-react-ui";
 import {
   BitgetWalletAdapter,
@@ -31,9 +28,8 @@ export function WalletConnectProvider({ children }: ComponentProps) {
       ? WalletAdapterNetwork.Mainnet
       : WalletAdapterNetwork.Devnet;
   const endpoint = useMemo(() => {
-    if (process.env.NEXT_PUBLIC_HELIUS_RPC_URL)
-      return process.env.NEXT_PUBLIC_HELIUS_RPC_URL;
-    console.log(clusterApiUrl(network))
+    if (process.env.NEXT_PUBLIC_HELIUS_RPC_URL) return process.env.NEXT_PUBLIC_HELIUS_RPC_URL;
+    console.log(clusterApiUrl(network));
     return clusterApiUrl(network);
   }, [network]);
 

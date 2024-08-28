@@ -82,7 +82,7 @@
   @apply content-[""] block absolute w-full h-full top-0 left-0 z-[-100] opacity-0 rounded-[inherit] transition-opacity duration-300 ease-in-out bg-[#dfff16];
 }
 
-.wallet-adapter-button.wallet-adapter-button-trigger>.wallet-adapter-button-start-icon {
+.wallet-adapter-button.wallet-adapter-button-trigger > .wallet-adapter-button-start-icon {
   @apply !mr-0 lg:!mr-2;
 }
 
@@ -99,10 +99,10 @@
   @apply absolute content-[""] -top-[5px] left-[50%] translate-x-[-50%] border-x-8 border-x-transparent border-b-4;
 }
 
-.wallet-adapter-dropdown-list>li {
+.wallet-adapter-dropdown-list > li {
   @apply px-10 py-5;
 }
 
-.wallet-adapter-dropdown-list>li:hover {
+.wallet-adapter-dropdown-list > li:hover {
   @apply !bg-[#2a384b40];
 }

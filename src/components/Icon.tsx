@@ -18,10 +18,7 @@ import {
   FaSortDown as SortDown,
   FaSortUp as SortUp,
 } from "react-icons/fa6";
-import {
-  TbArrowsLeftRight as ArrowsRightLeft,
-  TbUserPlus as UserPlus,
-} from "react-icons/tb";
+import { TbArrowsLeftRight as ArrowsRightLeft, TbUserPlus as UserPlus } from "react-icons/tb";
 import { LuCopy as Copy, LuCopyCheck as CopyCheck } from "react-icons/lu";
 import { IoShieldCheckmark as IoShieldCheckmark } from "react-icons/io5";
 
@@ -93,51 +90,48 @@ import {
 import type { ComponentProps } from "@/types";
 
 export type IconVariantProps = VariantProps<typeof iconVariants>;
-export const iconVariants = cva(
-  "flex items-center justify-center bg-transparent duration-75",
-  {
-    variants: {
-      variant: {
-        primary: "bg-black-200 dark:bg-white-200",
-        gold: "text-gold-light dark:text-gold-dark",
-        silver: "text-silver-light dark:text-silver-dark",
-        bronze: "text-bronze-light dark:text-bronze-dark",
-        danger:
-          "border border-black-200 dark:border-white-200 bg-card-light dark:bg-card-dark hover:border-danger hover:bg-danger-foreground-light hover:dark:border-danger hover:dark:bg-danger-foreground-dark",
-      },
-      withBorder: {
-        true: "border border-black-300 dark:border-white-300 bg-card-light dark:bg-card-dark hover:border-primary-light dark:hover:border-primary-dark hover:bg-primary-light-foreground dark:hover:bg-primary-dark-foreground",
-      },
-      round: {
-        none: "rounded-none",
-        sm: "rounded-sm",
-        md: "rounded-md",
-        lg: "rounded-lg",
-        xl: "rounded-xl",
-        full: "rounded-full",
-      },
-      size: {
-        2: "w-2 h-2",
-        2.5: "w-2.5 h-2.5",
-        3: "w-3 h-3",
-        4: "w-4 h-4",
-        5: "w-5 h-5 tablet_sm:w-4 tablet_sm:h-4",
-        6: "w-6 h-6 tablet_sm:w-5 tablet_sm:h-5",
-        8: "w-8 h-8",
-      },
-      padding: {
-        1: "p-1",
-        1.5: "p-1.5",
-        2: "p-2",
-        4: "p-4",
-      },
+export const iconVariants = cva("flex items-center justify-center bg-transparent duration-75", {
+  variants: {
+    variant: {
+      primary: "bg-black-200 dark:bg-white-200",
+      gold: "text-gold-light dark:text-gold-dark",
+      silver: "text-silver-light dark:text-silver-dark",
+      bronze: "text-bronze-light dark:text-bronze-dark",
+      danger:
+        "border border-black-200 dark:border-white-200 bg-card-light dark:bg-card-dark hover:border-danger hover:bg-danger-foreground-light hover:dark:border-danger hover:dark:bg-danger-foreground-dark",
     },
-    defaultVariants: {
-      round: "none",
-      withBorder: false,
+    withBorder: {
+      true: "border border-black-300 dark:border-white-300 bg-card-light dark:bg-card-dark hover:border-primary-light dark:hover:border-primary-dark hover:bg-primary-light-foreground dark:hover:bg-primary-dark-foreground",
     },
-  }
-);
+    round: {
+      none: "rounded-none",
+      sm: "rounded-sm",
+      md: "rounded-md",
+      lg: "rounded-lg",
+      xl: "rounded-xl",
+      full: "rounded-full",
+    },
+    size: {
+      2: "w-2 h-2",
+      2.5: "w-2.5 h-2.5",
+      3: "w-3 h-3",
+      4: "w-4 h-4",
+      5: "w-5 h-5 tablet_sm:w-4 tablet_sm:h-4",
+      6: "w-6 h-6 tablet_sm:w-5 tablet_sm:h-5",
+      8: "w-8 h-8",
+    },
+    padding: {
+      1: "p-1",
+      1.5: "p-1.5",
+      2: "p-2",
+      4: "p-4",
+    },
+  },
+  defaultVariants: {
+    round: "none",
+    withBorder: false,
+  },
+});
 
 export type IconType = keyof typeof icons;
 export interface IconProps

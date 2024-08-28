@@ -5,139 +5,112 @@
  * IDL can be found at `target/idl/spl_token_minter.json`.
  */
 export type SplTokenMinter = {
-  "address": "869iVKHTfLLLSCEGadN5E7EhMsvGyJvfs8kXABgYQFnT",
-  "metadata": {
-    "name": "splTokenMinter",
-    "version": "0.1.0",
-    "spec": "0.1.0",
-    "description": "Created with Anchor"
-  },
-  "instructions": [
+  address: "869iVKHTfLLLSCEGadN5E7EhMsvGyJvfs8kXABgYQFnT";
+  metadata: {
+    name: "splTokenMinter";
+    version: "0.1.0";
+    spec: "0.1.0";
+    description: "Created with Anchor";
+  };
+  instructions: [
     {
-      "name": "createToken",
-      "discriminator": [
-        84,
-        52,
-        204,
-        228,
-        24,
-        140,
-        234,
-        75
-      ],
-      "accounts": [
+      name: "createToken";
+      discriminator: [84, 52, 204, 228, 24, 140, 234, 75];
+      accounts: [
         {
-          "name": "payer",
-          "writable": true,
-          "signer": true
+          name: "payer";
+          writable: true;
+          signer: true;
         },
         {
-          "name": "mintAccount",
-          "writable": true,
-          "signer": true
+          name: "mintAccount";
+          writable: true;
+          signer: true;
         },
         {
-          "name": "metadataAccount",
-          "writable": true,
-          "pda": {
-            "seeds": [
+          name: "metadataAccount";
+          writable: true;
+          pda: {
+            seeds: [
               {
-                "kind": "const",
-                "value": [
-                  109,
-                  101,
-                  116,
-                  97,
-                  100,
-                  97,
-                  116,
-                  97
-                ]
+                kind: "const";
+                value: [109, 101, 116, 97, 100, 97, 116, 97];
               },
               {
-                "kind": "account",
-                "path": "tokenMetadataProgram"
+                kind: "account";
+                path: "tokenMetadataProgram";
               },
               {
-                "kind": "account",
-                "path": "mintAccount"
-              }
-            ],
-            "program": {
-              "kind": "account",
-              "path": "tokenMetadataProgram"
-            }
-          }
+                kind: "account";
+                path: "mintAccount";
+              },
+            ];
+            program: {
+              kind: "account";
+              path: "tokenMetadataProgram";
+            };
+          };
         },
         {
-          "name": "tokenProgram",
-          "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+          name: "tokenProgram";
+          address: "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA";
         },
         {
-          "name": "tokenMetadataProgram",
-          "address": "metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s"
+          name: "tokenMetadataProgram";
+          address: "metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s";
         },
         {
-          "name": "systemProgram",
-          "address": "11111111111111111111111111111111"
+          name: "systemProgram";
+          address: "11111111111111111111111111111111";
         },
         {
-          "name": "rent",
-          "address": "SysvarRent111111111111111111111111111111111"
-        }
-      ],
-      "args": [
+          name: "rent";
+          address: "SysvarRent111111111111111111111111111111111";
+        },
+      ];
+      args: [
         {
-          "name": "tokenName",
-          "type": "string"
+          name: "tokenName";
+          type: "string";
         },
         {
-          "name": "tokenSymbol",
-          "type": "string"
+          name: "tokenSymbol";
+          type: "string";
         },
         {
-          "name": "tokenUri",
-          "type": "string"
-        }
-      ]
+          name: "tokenUri";
+          type: "string";
+        },
+      ];
     },
     {
-      "name": "mintToken",
-      "discriminator": [
-        172,
-        137,
-        183,
-        14,
-        207,
-        110,
-        234,
-        56
-      ],
-      "accounts": [
+      name: "mintToken";
+      discriminator: [172, 137, 183, 14, 207, 110, 234, 56];
+      accounts: [
         {
-          "name": "mintAuthority",
-          "writable": true,
-          "signer": true
+          name: "mintAuthority";
+          writable: true;
+          signer: true;
         },
         {
-          "name": "recipient"
+          name: "recipient";
         },
         {
-          "name": "mintAccount",
-          "writable": true
+          name: "mintAccount";
+          writable: true;
         },
         {
-          "name": "associatedTokenAccount",
-          "writable": true,
-          "pda": {
-            "seeds": [
+          name: "associatedTokenAccount";
+          writable: true;
+          pda: {
+            seeds: [
               {
-                "kind": "account",
-                "path": "recipient"
+                kind: "account";
+                path: "recipient";
               },
               {
-                "kind": "const",
-                "value": [
+                kind: "const";
+                value: [
                   6,
                   221,
                   246,
@@ -169,17 +142,17 @@ export type SplTokenMinter = {
                   126,
                   255,
                   0,
-                  169
-                ]
+                  169,
+                ];
               },
               {
-                "kind": "account",
-                "path": "mintAccount"
-              }
-            ],
-            "program": {
-              "kind": "const",
-              "value": [
+                kind: "account";
+                path: "mintAccount";
+              },
+            ];
+            program: {
+              kind: "const";
+              value: [
                 140,
                 151,
                 37,
@@ -211,30 +184,30 @@ export type SplTokenMinter = {
                 219,
                 233,
                 248,
-                89
-              ]
-            }
-          }
+                89,
+              ];
+            };
+          };
         },
         {
-          "name": "tokenProgram",
-          "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+          name: "tokenProgram";
+          address: "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA";
         },
         {
-          "name": "associatedTokenProgram",
-          "address": "ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL"
+          name: "associatedTokenProgram";
+          address: "ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL";
         },
         {
-          "name": "systemProgram",
-          "address": "11111111111111111111111111111111"
-        }
-      ],
-      "args": [
+          name: "systemProgram";
+          address: "11111111111111111111111111111111";
+        },
+      ];
+      args: [
         {
-          "name": "amount",
-          "type": "u64"
-        }
-      ]
-    }
-  ]
+          name: "amount";
+          type: "u64";
+        },
+      ];
+    },
+  ];
 };

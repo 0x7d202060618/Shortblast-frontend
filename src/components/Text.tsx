@@ -47,10 +47,7 @@ export const textVariants = cva("", {
   },
 });
 
-export interface TextProps
-  extends ComponentProps,
-    HTMLAttributes<HTMLElement>,
-    TextVariantProps {
+export interface TextProps extends ComponentProps, HTMLAttributes<HTMLElement>, TextVariantProps {
   as?: ElementType;
 }
 
@@ -67,10 +64,7 @@ export default function Text({
   const NextText = as || tags[variant];
 
   return (
-    <NextText
-      {...props}
-      className={cn(textVariants({ variant, intent, align }), className)}
-    >
+    <NextText {...props} className={cn(textVariants({ variant, intent, align }), className)}>
       {children}
     </NextText>
   );

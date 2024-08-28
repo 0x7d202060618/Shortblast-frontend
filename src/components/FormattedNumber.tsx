@@ -4,9 +4,7 @@ import { formatNumber } from "@/utils/functions";
 import { FormatNumberOptions } from "@/types";
 import Text, { TextProps } from "./Text";
 
-export interface FormattedNumberProps
-  extends Omit<TextProps, "children">,
-    FormatNumberOptions {
+export interface FormattedNumberProps extends Omit<TextProps, "children">, FormatNumberOptions {
   value: string | number | null | undefined;
 }
 
@@ -41,9 +39,7 @@ export const TokenAmountNumber: React.FC<FormattedNumberProps> = ({
   decimalScale = 9,
   ...props
 }) => {
-  return (
-    <FormattedNumber value={value} decimalScale={decimalScale} {...props} />
-  );
+  return <FormattedNumber value={value} decimalScale={decimalScale} {...props} />;
 };
 
 export const CurrencyNumber: React.FC<FormattedNumberProps> = ({

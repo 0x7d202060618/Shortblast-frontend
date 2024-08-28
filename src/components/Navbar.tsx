@@ -52,33 +52,20 @@ const Navbar = () => {
             <div className="mx-[18px] my-2 flex items-center justify-between lg:hidden">
               <Link href="/" onClick={() => toggleMenu(true)}>
                 <div className="flex items-center gap-[10px] lg:gap-[15px]">
-                  <Image
-                    src={"/icon.png"}
-                    width={100}
-                    height={100}
-                    alt="icon"
-                  />
+                  <Image src={"/icon.png"} width={100} height={100} alt="icon" />
                   <span className="text-4xl font-bold uppercase">
                     Short<span className="text-[#dfff16]">Blast</span>
                   </span>
                 </div>
               </Link>
               <div className="flex h-6 w-6 items-center justify-center cursor-pointer mr-4">
-                <Icon
-                  name="close"
-                  className="h-[20px] w-[20px]"
-                  onClick={() => toggleMenu(true)}
-                />
+                <Icon name="close" className="h-[20px] w-[20px]" onClick={() => toggleMenu(true)} />
               </div>
             </div>
             <ul className="mx-[20px] mt-[10px] flex flex-col justify-center lg:mx-[0px] lg:mt-[0px] lg:flex-row lg:items-center">
               {menu &&
                 menu.map((item, index) => (
-                  <Link
-                    href={item?.path}
-                    key={index}
-                    onClick={() => toggleMenu(true)}
-                  >
+                  <Link href={item?.path} key={index} onClick={() => toggleMenu(true)}>
                     <li
                       className={`cursor-pointer border-b-[${
                         index < menu.length - 1 ? 1 : 0
@@ -92,11 +79,7 @@ const Navbar = () => {
           </div>
           <WalletConnectButton />
           <button className="lg:hidden px-2 mr-2" onClick={() => toggleMenu()}>
-            <Icon
-              name="menu"
-              className="h-[20px] w-[20px]"
-              onClick={() => toggleMenu(true)}
-            />
+            <Icon name="menu" className="h-[20px] w-[20px]" onClick={() => toggleMenu(true)} />
             {/* <HamburgerMenuIcon className="w-[20px] h-[20px]" /> */}
           </button>
         </div>

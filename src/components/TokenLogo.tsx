@@ -20,12 +20,7 @@ export default function TokenLogo({
   className,
 }: TokenLogoProps) {
   return (
-    <div
-      className={cn(
-        `relative w-${size} h-${size} rounded-full overflow-hidden`,
-        className
-      )}
-    >
+    <div className={cn(`relative w-${size} h-${size} rounded-full overflow-hidden`, className)}>
       <Image
         unoptimized
         src={imageUrl ? imageUrl : FAILOVER_IMAGE}
