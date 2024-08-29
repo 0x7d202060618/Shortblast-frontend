@@ -5,12 +5,14 @@ import Image from "next/image";
 import { getAssociatedTokenAddressSync } from "@solana/spl-token";
 import { Keypair, PublicKey } from "@solana/web3.js";
 import { Program, BN } from "@coral-xyz/anchor";
+import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 
 import { useFieldArray, useForm } from "react-hook-form";
 import { DropzoneOptions } from "react-dropzone";
 import { z } from "zod";
 import axios from "axios";
-import idl from "@/idl/spl_token_minter.json";
+import { zodResolver } from "@hookform/resolvers/zod";
+
 import {
   FileInput,
   FileUploader,
@@ -31,10 +33,9 @@ import {
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/utils/functions";
-import { zodResolver } from "@hookform/resolvers/zod";
 import TokenButton from "./token.button";
 import { TokenMetadata } from "@/types/token";
-import { useConnection, useWallet } from "@solana/wallet-adapter-react";
+import idl from "@/idl/spl_token_minter.json";
 
 const schema = z.object({
   symbol: z.string(),
@@ -406,7 +407,7 @@ const TokenForm = () => {
             htmlFor="terms"
             className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-pointer"
           >
-            I agree to the Moonshot <span className="underline">Terms and Conditions</span> and{" "}
+            I agree to the ShortBlast <span className="underline">Terms and Conditions</span> and{" "}
             <span className="underline">Token Profile Policy</span>.
           </label>
         </div>

@@ -14,7 +14,7 @@ const menu = [
   },
   {
     title: "Short Pool",
-    path: "/pool",
+    path: "/coming-soon",
   },
   {
     title: "Trading",
