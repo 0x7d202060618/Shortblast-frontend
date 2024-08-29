@@ -44,7 +44,7 @@ const ComingSoonPage = () => {
         <h1 className="text-4xl md:text-6xl font-bold mb-4">
           Coming <span className="text-[#dfff16]">Soon</span>
         </h1>
-        <p className="text-lg md:text-2xl mb-8">We're working hard to bring you our new website.</p>
+        <p className="text-lg md:text-2xl mb-8">We&apos;re working hard to bring you our new website.</p>
 
         {!submitted ? (
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 w-full max-w-sm mx-auto">
@@ -77,7 +77,7 @@ const ComingSoonPage = () => {
           </form>
         ) : (
           <div className="text-white p-4">
-            Thanks for subscribing! We'll notify you once we launch.
+            Thanks for subscribing! We&apos;ll notify you once we launch.
           </div>
         )}
       </div>
