@@ -49,18 +49,20 @@ const schema = z.object({
     )
     .optional(),
   initialBuy: z.string().optional(),
-  icon: z
-    .instanceof(File)
-    .refine((file) => file.size < 4 * 1024 * 1024, {
-      message: "File size must be less than 4MB",
-    })
-    .nullable(),
-  banner: z
-    .instanceof(File)
-    .refine((file) => file.size < 4 * 1024 * 1024, {
-      message: "File size must be less than 4MB",
-    })
-    .nullable(),
+  icon: z.any().nullable(),
+  // icon: z
+  //   .instanceof(File)
+  //   .refine((file) => file.size < 4 * 1024 * 1024, {
+  //     message: "File size must be less than 4MB",
+  //   })
+  //   .nullable(),
+  banner: z.any().nullable(),
+  // banner: z
+  //   .instanceof(File)
+  //   .refine((file) => file.size < 4 * 1024 * 1024, {
+  //     message: "File size must be less than 4MB",
+  //   })
+  //   .nullable(),
 });
 
 type FormSchema = z.infer<typeof schema>;
