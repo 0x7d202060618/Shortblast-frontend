@@ -9,6 +9,7 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
+import { useRouter } from "next/navigation";
 
 import {
   Table,
@@ -81,6 +82,7 @@ const columns: ColumnDef<PairData>[] = [
 ];
 
 export default function Trading() {
+  const router = useRouter();
   const [data, setData] = useState<PairData[]>(MOCK_DATA);
 
   const table = useReactTable({
@@ -153,7 +155,13 @@ export default function Trading() {
             <TableBody>
               {table.getRowModel().rows?.length ? (
                 table.getRowModel().rows.map((row) => (
-                  <TableRow key={row.id} className="cursor-pointer">
+                  <TableRow
+                    key={row.id}
+                    className="cursor-pointer"
+                    onClick={() =>
+                      router.push(`/trading/detail?tokenId=${row.original.token.address}`)
+                    }
+                  >
                     {row.getVisibleCells().map((cell) => (
                       <TableCell key={cell.id} className="p-4">
                         {flexRender(cell.column.columnDef.cell, cell.getContext())}
