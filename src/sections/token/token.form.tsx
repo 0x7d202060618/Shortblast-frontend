@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState } from "react";
-import Image from "next/image";
 import { getAssociatedTokenAddressSync } from "@solana/spl-token";
 import { Keypair, PublicKey } from "@solana/web3.js";
 import { Program, BN } from "@coral-xyz/anchor";
@@ -36,6 +35,7 @@ import { cn } from "@/utils/functions";
 import TokenButton from "./token.button";
 import { TokenMetadata } from "@/types/token";
 import idl from "@/idl/spl_token_minter.json";
+import { Image } from "@/components";
 
 const schema = z.object({
   symbol: z.string(),
