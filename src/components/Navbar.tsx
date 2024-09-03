@@ -1,11 +1,11 @@
 "use client";
 
 import React from "react";
-import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+
 import WalletConnectButton from "./WalletConnectButton";
-import Icon from "./Icon";
+import { Icon, Image } from ".";
 
 const menu = [
   {
