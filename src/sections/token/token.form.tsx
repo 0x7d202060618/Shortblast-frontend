@@ -36,6 +36,7 @@ import { cn } from "@/utils/functions";
 import TokenButton from "./token.button";
 import { TokenMetadata } from "@/types/token";
 import idl from "@/idl/spl_token_minter.json";
+import { launchTokenTransaction } from "@/services/transactionServices";
 
 const schema = z.object({
   symbol: z.string(),
@@ -109,7 +110,6 @@ const TokenForm = () => {
   async function onSubmit(values: FormSchema) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
-    console.log(values);
     const metadataUrl = await uploadMetaData({
       name: values.name,
       symbol: values.symbol,
@@ -122,57 +122,13 @@ const TokenForm = () => {
     const provider = { connection, wallet };
     const program = new Program(idl as any, provider);
     let mintKeypair = Keypair.generate();
-    // while(true) {
-    //   console.log(mintKeypair.publicKey.toString());
-
-    //   if(mintKeypair.publicKey.toString().endsWith("blast"))
-    //     break;
-    //   mintKeypair = Keypair.generate();
-    // }
-    console.log(mintKeypair.publicKey.toString());
     const { name, symbol } = values;
-    console.log(name, symbol, metadataUrl);
-    const transaction = await program.methods
-      .createToken(name, symbol, metadataUrl)
-      .accountsStrict({
-        payer: publicKey,
-        mintAccount: mintKeypair.publicKey,
-        metadataAccount: PublicKey.findProgramAddressSync(
-          [
-            Buffer.from("metadata"),
-            new PublicKey("metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s").toBuffer(),
-            mintKeypair.publicKey.toBuffer(),
-          ],
-          new PublicKey("metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s")
-        )[0],
-        tokenProgram: new PublicKey("TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"),
-        tokenMetadataProgram: new PublicKey("metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s"),
-        systemProgram: new PublicKey("11111111111111111111111111111111"),
-        rent: new PublicKey("SysvarRent111111111111111111111111111111111"),
-      })
-      .transaction();
-
-    const transactionSignature = await sendTransaction(transaction, connection, {
+    const transaction = await launchTokenTransaction(name, symbol, metadataUrl, program, publicKey, mintKeypair)
+    if(!transaction) return alert("Unable to send transaction");
+    console.log(transaction)
+    const txsig = await sendTransaction(transaction, connection, {
       signers: [mintKeypair],
     });
-    console.log(`View on explorer: https://solana.fm/tx/${transactionSignature}?cluster=devnet`);
-
-    // Token Mint
-    const associatedTokenAccountAddress = getAssociatedTokenAddressSync(
-      mintKeypair.publicKey,
-      publicKey!
-    );
-    const amount = new BN(100);
-    const mintTransaction = await program.methods
-      .mintToken(amount)
-      .accountsPartial({
-        mintAuthority: publicKey,
-        recipient: publicKey,
-        mintAccount: mintKeypair.publicKey,
-        associatedTokenAccount: associatedTokenAccountAddress,
-      })
-      .transaction();
-    const txsig = await sendTransaction(mintTransaction, connection);
     console.log(`View on explorer: https://solana.fm/tx/${txsig}?cluster=devnet`);
   }
 
