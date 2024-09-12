@@ -9,6 +9,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { Image } from "@/components";
 
 const subscribeSchema = z.object({
   email: z.string().email({ message: "Please enter a valid email address." }),
@@ -33,55 +34,16 @@ const ComingSoonPage = () => {
   };
 
   return (
-    <div className="mt-[10%] flex items-center justify-center">
-      <Head>
-        <title>Coming Soon</title>
-        <meta name="description" content="Our website is coming soon!" />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-
-      <div className="text-center text-white p-6 md:p-12">
-        <h1 className="text-4xl md:text-6xl font-bold mb-4">
-          Coming <span className="text-[#dfff16]">Soon</span>
-        </h1>
-        <p className="text-lg md:text-2xl mb-8">We&apos;re working hard to bring you our new website.</p>
-
-        {!submitted ? (
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 w-full max-w-sm mx-auto">
-            <div>
-              <Input {...register("email")} placeholder="Enter your email" />
-              {errors.email && <p className="text-red-500 text-sm">{errors.email.message}</p>}
-            </div>
-
-            <div className="flex items-center justify-center space-x-2">
-              <Checkbox
-                id="terms"
-                checked={agreedTerms}
-                onCheckedChange={(checked) => setAgreedTerms(checked as boolean)}
-              />
-              <label
-                htmlFor="terms"
-                className="text-sm leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-pointer"
-              >
-                I agree to the ShortBlast <span className="underline">Terms and Conditions.</span>
-              </label>
-            </div>
-
-            <Button
-              type="submit"
-              disabled={!agreedTerms}
-              className="bg-[#dfff16] hover:opacity-80 hover:bg-[#dfff16] transition-all text-md text-bold text-black font-bold py-2 px-4 rounded"
-            >
-              Notify Me
-            </Button>
-          </form>
-        ) : (
-          <div className="text-white p-4">
-            Thanks for subscribing! We&apos;ll notify you once we launch.
-          </div>
-        )}
+    <main className="flex flex-col items-center px-4 md:px-24 pt-[200px] md:pt-[300px]">
+    <div className="max-w-5xl w-full">
+      <div className='flex flex-col justify-center items-center'>
+        <Image src={"/ShortBlast_Logo.png"} width={220} height={220} alt="icon" />
+        <div className='h-[400px] mt-8 text-5xl md:text-8xl font-bold bg-gradient-to-r from-white to-rose-400 bg-clip-text text-transparent'>
+          Coming Soon..
+        </div>
       </div>
     </div>
+  </main>
   );
 };
 

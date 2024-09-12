@@ -35,8 +35,10 @@ import { cn } from "@/utils/functions";
 import TokenButton from "./token.button";
 import { TokenMetadata } from "@/types/token";
 import idl from "@/idl/spl_token_minter.json";
+import bondingIdl from "@/idl/bonding_curve.json";
 import { Image } from "@/components";
-import { launchTokenTransaction } from "@/services/transactionServices";
+import { createBondingPoolTransaction, launchTokenTransaction } from "@/services/transactionServices";
+import { POOL_REGISTRY_SEED } from "@/utils/constants";
 
 const schema = z.object({
   symbol: z.string(),
@@ -107,6 +109,7 @@ const TokenForm = () => {
     maxSize: 4 * 1024 * 1024,
   } satisfies DropzoneOptions;
 
+
   async function onSubmit(values: FormSchema) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
@@ -121,15 +124,31 @@ const TokenForm = () => {
 
     const provider = { connection, wallet };
     const program = new Program(idl as any, provider);
+    const bondingProgram = new Program(bondingIdl as any, provider);
+    // const [poolRegistry] = PublicKey.findProgramAddressSync(
+    //   [Buffer.from(POOL_REGISTRY_SEED)],
+    //   bondingProgram.programId
+    // )
+    // console.log(await bondingProgram.account.poolRegistry.fetch(poolRegistry));
+
     let mintKeypair = Keypair.generate();
     const { name, symbol } = values;
-    const transaction = await launchTokenTransaction(name, symbol, metadataUrl, program, publicKey, mintKeypair)
-    if(!transaction) return alert("Unable to send transaction");
-    console.log(transaction)
-    const txsig = await sendTransaction(transaction, connection, {
+    let createTokenTransaction = await launchTokenTransaction(name, symbol, metadataUrl, program, publicKey, mintKeypair)
+    if(!createTokenTransaction) return alert("Unable to send transaction");
+    let txsig = await sendTransaction(createTokenTransaction, connection, {
       signers: [mintKeypair],
     });
-    console.log(`View on explorer: https://solana.fm/tx/${txsig}?cluster=devnet`);
+    console.log("Successfully created token : ", `https://solscan.io/tx/${txsig}?cluster=devnet`)
+
+
+    let poolTransaction = await createBondingPoolTransaction(bondingProgram, mintKeypair, publicKey);
+    console.log(poolTransaction)
+    if(!poolTransaction) return alert("Unable to send transaction");
+    txsig = await sendTransaction(poolTransaction, connection, {
+      skipPreflight: true
+    });
+    console.log("Successfully created pool : ", `https://solscan.io/tx/${txsig}?cluster=devnet`)
+
   }
 
   async function handleImageChange(values: File[] | null) {
@@ -197,6 +216,7 @@ const TokenForm = () => {
       alert({ type: "error", message: "Upload failed" });
     }
   }
+  
 
   return (
     <Form {...form}>
