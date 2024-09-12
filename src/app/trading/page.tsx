@@ -25,14 +25,14 @@ import MOCK_DATA from "./data.json";
 import { Icon, Text } from "@/components";
 import { CurrencyNumber } from "@/components/FormattedNumber";
 
-interface TokenData {
+export interface TokenData {
   symbol: string;
   name: string;
   address: string;
   image: string;
 }
 
-interface PairData {
+export interface PairData {
   token: TokenData;
   currentPrice: string;
   priceChange24h: string;
