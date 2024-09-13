@@ -69,6 +69,19 @@
   }
 }
 
+textarea:focus,
+textarea:focus-visible,
+input:focus,
+input:focus-visible,
+div:focus,
+div:focus-visible,
+svg:focus,
+svg:focus-visible {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+
 /* custom wallet button  */
 .wallet-adapter-dropdown {
   @apply w-full;
