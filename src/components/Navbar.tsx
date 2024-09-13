@@ -39,10 +39,7 @@ const Navbar = () => {
     <>
       <nav className="relative z-50 px-[18px] py-2 md:px-[20px] lg:px-[30px] bg-black text-white bg-opacity-50 border-b-[1px] border-opacity-40 w-full flex items-center justify-between">
         <div className="flex items-center gap-[10px] lg:gap-[15px]">
-          <Image src={"/icon.png"} width={100} height={100} alt="icon" />
-          <span className="text-4xl font-bold uppercase">
-            Short<span className="text-[#dfff16]">Blast</span>
-          </span>
+          <Image src={"/Logo.png"} width={200} height={200} alt="icon" />
         </div>
         <div className="flex items-center">
           <div
@@ -52,10 +49,7 @@ const Navbar = () => {
             <div className="mx-[18px] my-2 flex items-center justify-between lg:hidden">
               <Link href="/" onClick={() => toggleMenu(true)}>
                 <div className="flex items-center gap-[10px] lg:gap-[15px]">
-                  <Image src={"/icon.png"} width={100} height={100} alt="icon" />
-                  <span className="text-4xl font-bold uppercase">
-                    Short<span className="text-[#dfff16]">Blast</span>
-                  </span>
+                  <Image src={"/Logo.png"} width={200} height={200} alt="icon" />
                 </div>
               </Link>
               <div className="flex h-6 w-6 items-center justify-center cursor-pointer mr-4">
