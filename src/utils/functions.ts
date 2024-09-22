@@ -1,3 +1,4 @@
+import { BN } from '@coral-xyz/anchor';
 import millify from "millify";
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
@@ -65,3 +66,7 @@ export const formatNumber = (
 
   return `${prefix}${formattedValue}${suffix}`;
 };
+
+export const convertFromLamports = (amount: BN) => {
+  return amount / new BN(10 ** 9);
+}

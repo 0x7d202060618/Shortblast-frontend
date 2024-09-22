@@ -20,7 +20,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import TokenLogo from "@/components/TokenLogo";
-import { cn, truncateAddress } from "@/utils/functions";
+import { cn, convertFromLamports, truncateAddress } from "@/utils/functions";
 import MOCK_DATA from "./data.json";
 import { Icon, Text } from "@/components";
 import { CurrencyNumber } from "@/components/FormattedNumber";
@@ -45,23 +45,35 @@ export interface PairData {
   marketCap: string;
 }
 
-const columns: ColumnDef<PairData>[] = [
+export interface PoolData {
+  address: string;
+  liquidity: number;
+  marketCap: number;
+  price: number;
+}
+
+const columns: ColumnDef<PoolData>[] = [
   {
     id: "pair",
     header: "PAIR INFO",
     cell: ({ row }) => (
       <div className="flex gap-4 items-center">
-        <TokenLogo imageUrl={row.original.token.image} alt={row.original.token.name} size={10} />
+        <TokenLogo
+          imageUrl="https://tokenthumb-photon.tinyastro.io/uploads/sol/token/img_src/2862047/QmX3Vt2TzHhs7qeeNs5BmNZh6nH9Focw8bCncj5awKb6Vg.jpg"
+          alt="Token"
+          size={10}
+        />
+        {/* <TokenLogo imageUrl={row.original.token.image} alt={row.original.token.name} size={10} /> */}
         <div className="flex flex-col gap-1">
           <div className="flex gap-1">
             <Text variant="lg" className="font-bold">
-              {row.original.token.symbol}
+              MEME
             </Text>
             <Text variant="lg" className="text-gray-400">
               / SOL
             </Text>
           </div>
-          <Text className="text-gray-600">{truncateAddress(row.original.token.address)}</Text>
+          <Text className="text-gray-600">{truncateAddress(row.original.address)}</Text>
         </div>
       </div>
     ),
@@ -69,9 +81,7 @@ const columns: ColumnDef<PairData>[] = [
   {
     id: "current_price",
     header: "PRICE",
-    cell: ({ row }) => (
-      <CurrencyNumber variant="lg" decimalScale={10} value={row.original.currentPrice} />
-    ),
+    cell: ({ row }) => <CurrencyNumber variant="lg" decimalScale={10} value={row.original.price} />,
   },
   {
     id: "liquidity",
@@ -81,13 +91,13 @@ const columns: ColumnDef<PairData>[] = [
   {
     id: "market_cap",
     header: "MCAP",
-    cell: ({ row }) => <CurrencyNumber variant="lg" value={row.original.liquidity} />,
+    cell: ({ row }) => <CurrencyNumber variant="lg" value={row.original.marketCap} />,
   },
 ];
 
 export default function Trading() {
   const router = useRouter();
-  const [data, setData] = useState<PairData[]>(MOCK_DATA);
+  const [data, setData] = useState<PoolData[]>([]);
 
   const table = useReactTable({
     data: data || [],
@@ -106,11 +116,43 @@ export default function Trading() {
 
     (async () => {
       const pools = await getPools(program);
-      console.log(pools)
+      setData(
+        pools.map((pool, index) => {
+          return {
+            address: pool.account.token.toBase58(),
+            liquidity: convertFromLamports(pool.account.totalSupply - pool.account.reserveToken),
+            marketCap: 60 - convertFromLamports(pool.account.reserveSol),
+            price:
+              0.0615 *
+              0.0003606 *
+              Math.exp(
+                0.0003606 *
+                  convertFromLamports(pool.account.totalSupply - pool.account.reserveToken)
+              ),
+          };
+        })
+      );
+      console.log({
+        pools,
+        formatted: pools.map((pool, index) => {
+          return {
+            address: pool.account.token.toBase58(),
+            liquidity: convertFromLamports(pool.account.totalSupply - pool.account.reserveToken),
+            marketCap: 60 - convertFromLamports(pool.account.reserveSol),
+            price:
+              0.0615 *
+              0.0003606 *
+              Math.exp(
+                0.0003606 *
+                  convertFromLamports(pool.account.totalSupply - pool.account.reserveToken)
+              ),
+          };
+        }),
+      });
     })();
     (async () => {
       const pool_registry = await getPoolRegistry(program);
-      console.log(pool_registry)
+      console.log(pool_registry);
     })();
   }, []);
 
@@ -179,9 +221,9 @@ export default function Trading() {
                   <TableRow
                     key={row.id}
                     className="cursor-pointer"
-                    onClick={() =>
-                      router.push(`/trading/detail?tokenId=${row.original.token.address}`)
-                    }
+                    // onClick={() =>
+                    //   router.push(`/trading/detail?tokenId=${row.original.token.address}`)
+                    // }
                   >
                     {row.getVisibleCells().map((cell) => (
                       <TableCell key={cell.id} className="p-4">
