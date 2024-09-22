@@ -221,9 +221,11 @@ export default function Trading() {
                   <TableRow
                     key={row.id}
                     className="cursor-pointer"
-                    // onClick={() =>
-                    //   router.push(`/trading/detail?tokenId=${row.original.token.address}`)
-                    // }
+                    onClick={() =>
+                      router.push(
+                        `/trading/detail?tokenId=8kMxGYH2Vh8v1KhbbpEZB46Ef43xHKi1jWfJeLqGpump`
+                      )
+                    }
                   >
                     {row.getVisibleCells().map((cell) => (
                       <TableCell key={cell.id} className="p-4">

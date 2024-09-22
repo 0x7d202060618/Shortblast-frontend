@@ -12,7 +12,7 @@ enum TimeFrame {
 }
 
 const StatsView = () => {
-  const [period, setPeriod] = useState<TimeFrame | undefined>();
+  const [period, setPeriod] = useState<TimeFrame | undefined>(TimeFrame["5M"]);
 
   const handleChangeState = (state: TimeFrame) => {
     setPeriod((prev) => (prev == state ? undefined : state));

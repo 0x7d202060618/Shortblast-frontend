@@ -24,7 +24,7 @@ const OrderView = ({ token }: { token: PairData }) => {
   const [buyAmount, setBuyAmount] = useState("");
   const [sellAmount, setSellAmount] = useState("");
   const [slippage, setSlippage] = useState("");
-  const [orderType, setOrderType] = useState<OrderType | undefined>();
+  const [orderType, setOrderType] = useState<OrderType | undefined>(OrderType.Buy);
 
   const handleChangeOrderType = (state: OrderType) => {
     setOrderType((prev) => (prev === state ? undefined : state));

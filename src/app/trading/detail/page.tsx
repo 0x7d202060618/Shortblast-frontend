@@ -27,7 +27,7 @@ export default function TokenPairDetail() {
               {selectedTokenPair.token.name}
             </Text>
           </div>
-          {/* <AdvancedChart widgetProps={{ theme: "dark" }} /> */}
+          <AdvancedChart widgetProps={{ theme: "dark" }} />
           <div className="w-full h-[700px] bg-gray-900"></div>
         </div>
         <div className="max-w-[320px] min-w-[320px] h-[1000px] flex flex-col gap-2">
