@@ -34,11 +34,11 @@ import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/utils/functions";
 import TokenButton from "./token.button";
 import { TokenMetadata } from "@/types/token";
-import idl from "@/idl/spl_token_minter.json";
-import bondingIdl from "@/idl/bonding_curve.json";
+import idl from "@/idl/solana_program.json";
 import { Image } from "@/components";
-import { createBondingPoolTransaction, launchTokenTransaction } from "@/services/transactionServices";
+import { launchTokenTransaction } from "@/services/transactionServices";
 import { POOL_REGISTRY_SEED } from "@/utils/constants";
+import poolKey from "../../keys/pool_key.json";
 
 const schema = z.object({
   symbol: z.string(),
@@ -124,31 +124,18 @@ const TokenForm = () => {
 
     const provider = { connection, wallet };
     const program = new Program(idl as any, provider);
-    const bondingProgram = new Program(bondingIdl as any, provider);
-    // const [poolRegistry] = PublicKey.findProgramAddressSync(
-    //   [Buffer.from(POOL_REGISTRY_SEED)],
-    //   bondingProgram.programId
-    // )
-    // console.log(await bondingProgram.account.poolRegistry.fetch(poolRegistry));
 
     let mintKeypair = Keypair.generate();
+    const pool_reg_KP = Keypair.fromSecretKey(new Uint8Array(poolKey));
+
+    console.log(pool_reg_KP.publicKey.toBase58())
     const { name, symbol } = values;
-    let createTokenTransaction = await launchTokenTransaction(name, symbol, metadataUrl, program, publicKey, mintKeypair)
+    let createTokenTransaction = await launchTokenTransaction(name, symbol, metadataUrl, program, publicKey, mintKeypair, connection, pool_reg_KP)
     if(!createTokenTransaction) return alert("Unable to send transaction");
     let txsig = await sendTransaction(createTokenTransaction, connection, {
-      signers: [mintKeypair],
+      signers: [mintKeypair, pool_reg_KP],
     });
     console.log("Successfully created token : ", `https://solscan.io/tx/${txsig}?cluster=devnet`)
-
-
-    let poolTransaction = await createBondingPoolTransaction(bondingProgram, mintKeypair, publicKey);
-    console.log(poolTransaction)
-    if(!poolTransaction) return alert("Unable to send transaction");
-    txsig = await sendTransaction(poolTransaction, connection, {
-      skipPreflight: true
-    });
-    console.log("Successfully created pool : ", `https://solscan.io/tx/${txsig}?cluster=devnet`)
-
   }
 
   async function handleImageChange(values: File[] | null) {

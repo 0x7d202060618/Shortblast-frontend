@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import {
   ColumnDef,
@@ -24,6 +24,10 @@ import { cn, truncateAddress } from "@/utils/functions";
 import MOCK_DATA from "./data.json";
 import { Icon, Text } from "@/components";
 import { CurrencyNumber } from "@/components/FormattedNumber";
+import { useConnection, useWallet } from "@solana/wallet-adapter-react";
+import { getPoolRegistry, getPools } from "../provider/bondingProvider";
+import { Program } from "@coral-xyz/anchor";
+import idl from "@/idl/solana_program.json";
 
 export interface TokenData {
   symbol: string;
@@ -92,6 +96,23 @@ export default function Trading() {
     getSortedRowModel: getSortedRowModel(),
     manualSorting: true,
   });
+
+  const { connection } = useConnection();
+  const { publicKey, sendTransaction, wallet } = useWallet();
+
+  useEffect(() => {
+    const provider = { connection, wallet };
+    const program = new Program(idl as any, provider);
+
+    (async () => {
+      const pools = await getPools(program);
+      console.log(pools)
+    })();
+    (async () => {
+      const pool_registry = await getPoolRegistry(program);
+      console.log(pool_registry)
+    })();
+  }, []);
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-between py-10 px-5 md:px-24">
