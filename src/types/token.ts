@@ -1,8 +1,7 @@
 export interface TokenMetadata {
-  icon: File | null;
-  banner: File | null;
+  icon: string | undefined;
+  banner: string | undefined;
   description: string | undefined;
-  initialBuy: number;
   name: string | undefined;
   symbol: string | undefined;
 }

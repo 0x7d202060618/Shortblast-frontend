@@ -39,6 +39,7 @@ import { Image } from "@/components";
 import { launchTokenTransaction } from "@/services/transactionServices";
 import { POOL_REGISTRY_SEED } from "@/utils/constants";
 import poolKey from "../../keys/pool_key.json";
+import { metadata } from "@/app/layout";
 
 const schema = z.object({
   symbol: z.string(),
@@ -113,38 +114,28 @@ const TokenForm = () => {
   async function onSubmit(values: FormSchema) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
+    const iconUrl = await uploadImagePinata(values.icon);
+    const bannerUrl = await uploadImagePinata(values.banner);
     const metadataUrl = await uploadMetaData({
       name: values.name,
       symbol: values.symbol,
       description: values.description,
-      icon: values.icon,
-      banner: values.banner,
-      initialBuy: Number(values.initialBuy),
+      icon: iconUrl,
+      banner: bannerUrl,
     });
 
     const provider = { connection, wallet };
     const program = new Program(idl as any, provider);
 
     let mintKeypair = Keypair.generate();
-    const pool_reg_KP = Keypair.fromSecretKey(new Uint8Array(poolKey));
 
-    console.log(pool_reg_KP.publicKey.toBase58())
     const { name, symbol } = values;
-    let createTokenTransaction = await launchTokenTransaction(name, symbol, metadataUrl, program, publicKey, mintKeypair, connection, pool_reg_KP)
+    let createTokenTransaction = await launchTokenTransaction(name, symbol, metadataUrl, program, publicKey, mintKeypair, connection)
     if(!createTokenTransaction) return alert("Unable to send transaction");
     let txsig = await sendTransaction(createTokenTransaction, connection, {
-      signers: [mintKeypair, pool_reg_KP],
+      signers: [mintKeypair],
     });
     console.log("Successfully created token : ", `https://solscan.io/tx/${txsig}?cluster=devnet`)
-  }
-
-  async function handleImageChange(values: File[] | null) {
-    if (!values) return;
-    const file = values[0];
-    if (file) {
-      const imgUrl = await uploadImagePinata(file);
-    }
-    console.log(values);
   }
 
   async function uploadImagePinata(file: File) {
@@ -179,7 +170,8 @@ const TokenForm = () => {
       name: tokenInfo.name,
       symbol: tokenInfo.symbol,
       description: tokenInfo.description,
-      image: token.tokenImageURL,
+      image: tokenInfo.icon,
+      banner: tokenInfo.banner,
     });
     try {
       const response = await axios({
@@ -259,8 +251,7 @@ const TokenForm = () => {
                   <FileUploader
                     value={field.value ? [field.value] : null}
                     onValueChange={(values) => {
-                      handleImageChange(values);
-                      field.onChange(values ? values[0] : null);
+                      field.onChange(values ? values[values.length - 1] : null);
                     }}
                     dropzoneOptions={dropZoneConfig}
                     className="relative space-y-1"
@@ -271,8 +262,11 @@ const TokenForm = () => {
                           <FileUploaderItem index={0} className="p-0 !h-full !w-full">
                             <Image
                               src={URL.createObjectURL(field.value)}
+                              style={{
+                                objectFit: "contain"
+                              }}
                               alt={field.value.name}
-                              className="object-cover rounded-md"
+                              className="rounded-md w-full h-full"
                               fill
                             />
                           </FileUploaderItem>
@@ -293,7 +287,7 @@ const TokenForm = () => {
                   <FileUploader
                     value={field.value ? [field.value] : null}
                     onValueChange={(values) => field.onChange(values ? values[0] : null)}
-                    dropzoneOptions={dropZoneConfig}
+                    dropzoneOptions={{...dropZoneConfig, maxFiles: 1}}
                     className="relative space-y-1 max-w-full"
                   >
                     <FileInput>
