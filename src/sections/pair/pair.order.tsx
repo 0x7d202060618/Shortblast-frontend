@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-import { PairData } from "@/app/trading/page";
+import { PoolData } from "@/app/trading/page";
 import { Image, Text, TokenLogo } from "@/components";
 import FormattedNumberInput from "@/components/FormattedNumberInput";
 import { Button } from "@/components/ui/button";
@@ -18,7 +18,7 @@ const OrderTypeLabel = {
   [OrderType.Sell]: "Sell",
 };
 
-const OrderView = ({ token }: { token: PairData }) => {
+const OrderView = ({ pool }: { pool: PoolData }) => {
   const total = 1000;
 
   const [buyAmount, setBuyAmount] = useState("");
@@ -93,10 +93,8 @@ const OrderView = ({ token }: { token: PairData }) => {
               <div className="rounded-md border-[1px]">
                 <div className="relative flex px-2 items-center">
                   <div className="absolute flex gap-1 items-center">
-                    <TokenLogo imageUrl={token.token.image} alt={token.token.name} size={4} />
-                    <span className="max-w-[70px] text-ellipsis overflow-hidden">
-                      {token.token.name}
-                    </span>
+                    <TokenLogo imageUrl={pool.image} alt={pool.name} size={4} />
+                    <span className="max-w-[70px] text-ellipsis overflow-hidden">{pool.name}</span>
                   </div>
                   <FormattedNumberInput
                     value={sellAmount}

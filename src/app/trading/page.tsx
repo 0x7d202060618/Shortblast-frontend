@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React from "react";
 
 import {
   ColumnDef,
@@ -20,14 +20,12 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import TokenLogo from "@/components/TokenLogo";
-import { cn, convertFromLamports, truncateAddress } from "@/utils/functions";
-import MOCK_DATA from "./data.json";
+import { cn, truncateAddress } from "@/utils/functions";
 import { Icon, Text } from "@/components";
 import { CurrencyNumber } from "@/components/FormattedNumber";
-import { useConnection, useWallet } from "@solana/wallet-adapter-react";
-import { getPoolRegistry, getPools } from "../provider/bondingProvider";
-import { Program } from "@coral-xyz/anchor";
-import idl from "@/idl/solana_program.json";
+import { usePools } from "@/contexts/PoolsProvider";
+import PoolsListTableSkeleton from "@/components/Loader/skeleton-loader/PoolsListTableSkeleton";
+import { SOL_PRICE } from "@/utils/constants";
 
 export interface TokenData {
   symbol: string;
@@ -46,6 +44,9 @@ export interface PairData {
 }
 
 export interface PoolData {
+  name: string;
+  symbol: string;
+  image: string;
   address: string;
   liquidity: number;
   marketCap: number;
@@ -58,16 +59,11 @@ const columns: ColumnDef<PoolData>[] = [
     header: "PAIR INFO",
     cell: ({ row }) => (
       <div className="flex gap-4 items-center">
-        <TokenLogo
-          imageUrl="https://tokenthumb-photon.tinyastro.io/uploads/sol/token/img_src/2862047/QmX3Vt2TzHhs7qeeNs5BmNZh6nH9Focw8bCncj5awKb6Vg.jpg"
-          alt="Token"
-          size={10}
-        />
-        {/* <TokenLogo imageUrl={row.original.token.image} alt={row.original.token.name} size={10} /> */}
+        <TokenLogo imageUrl={row.original.image} alt={row.original.name} size={10} />
         <div className="flex flex-col gap-1">
           <div className="flex gap-1">
             <Text variant="lg" className="font-bold">
-              MEME
+              {row.original.symbol}
             </Text>
             <Text variant="lg" className="text-gray-400">
               / SOL
@@ -81,7 +77,9 @@ const columns: ColumnDef<PoolData>[] = [
   {
     id: "current_price",
     header: "PRICE",
-    cell: ({ row }) => <CurrencyNumber variant="lg" decimalScale={10} value={row.original.price} />,
+    cell: ({ row }) => (
+      <CurrencyNumber variant="lg" decimalScale={10} value={row.original.price * SOL_PRICE} />
+    ),
   },
   {
     id: "liquidity",
@@ -97,64 +95,15 @@ const columns: ColumnDef<PoolData>[] = [
 
 export default function Trading() {
   const router = useRouter();
-  const [data, setData] = useState<PoolData[]>([]);
+  const { pools } = usePools();
 
   const table = useReactTable({
-    data: data || [],
+    data: pools || [],
     columns,
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
     manualSorting: true,
   });
-
-  const { connection } = useConnection();
-  const { publicKey, sendTransaction, wallet } = useWallet();
-
-  useEffect(() => {
-    const provider = { connection, wallet };
-    const program = new Program(idl as any, provider);
-
-    (async () => {
-      const pools = await getPools(program);
-      setData(
-        pools.map((pool, index) => {
-          return {
-            address: pool.account.token.toBase58(),
-            liquidity: convertFromLamports(pool.account.totalSupply - pool.account.reserveToken),
-            marketCap: 60 - convertFromLamports(pool.account.reserveSol),
-            price:
-              0.0615 *
-              0.0003606 *
-              Math.exp(
-                0.0003606 *
-                  convertFromLamports(pool.account.totalSupply - pool.account.reserveToken)
-              ),
-          };
-        })
-      );
-      console.log({
-        pools,
-        formatted: pools.map((pool, index) => {
-          return {
-            address: pool.account.token.toBase58(),
-            liquidity: convertFromLamports(pool.account.totalSupply - pool.account.reserveToken),
-            marketCap: 60 - convertFromLamports(pool.account.reserveSol),
-            price:
-              0.0615 *
-              0.0003606 *
-              Math.exp(
-                0.0003606 *
-                  convertFromLamports(pool.account.totalSupply - pool.account.reserveToken)
-              ),
-          };
-        }),
-      });
-    })();
-    (async () => {
-      const pool_registry = await getPoolRegistry(program);
-      console.log(pool_registry);
-    })();
-  }, []);
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-between py-10 px-5 md:px-24">
@@ -214,18 +163,14 @@ export default function Trading() {
               </TableRow>
             ))}
           </TableHeader>
-          {data ? (
+          {pools ? (
             <TableBody>
               {table.getRowModel().rows?.length ? (
                 table.getRowModel().rows.map((row) => (
                   <TableRow
                     key={row.id}
                     className="cursor-pointer"
-                    onClick={() =>
-                      router.push(
-                        `/trading/detail?tokenId=8kMxGYH2Vh8v1KhbbpEZB46Ef43xHKi1jWfJeLqGpump`
-                      )
-                    }
+                    onClick={() => router.push(`/trading/detail?address=${row.original.address}`)}
                   >
                     {row.getVisibleCells().map((cell) => (
                       <TableCell key={cell.id} className="p-4">
@@ -243,7 +188,7 @@ export default function Trading() {
               )}
             </TableBody>
           ) : (
-            <div>Loading...</div>
+            <PoolsListTableSkeleton />
           )}
         </Table>
       </div>
