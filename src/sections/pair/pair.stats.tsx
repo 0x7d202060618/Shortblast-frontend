@@ -12,7 +12,7 @@ enum TimeFrame {
 }
 
 const StatsView = () => {
-  const [period, setPeriod] = useState<TimeFrame | undefined>(TimeFrame["5M"]);
+  const [period, setPeriod] = useState<TimeFrame | undefined>("5M" as unknown as TimeFrame);
 
   const handleChangeState = (state: TimeFrame) => {
     setPeriod((prev) => (prev == state ? undefined : state));
@@ -27,6 +27,7 @@ const StatsView = () => {
           ) as unknown as TimeFrame[]
         ).map((state, index) => (
           <li
+            key={`${state}_stats`}
             className={cn(
               "w-full cursor-pointer flex flex-col items-center justify-center pt-2 pb-3",
               index != 0 && "border-l-[1px]",
@@ -40,7 +41,7 @@ const StatsView = () => {
         ))}
       </ul>
 
-      {!!period && (
+      {period !== undefined && (
         <div className="border-gray-800 border-t-[1px]">
           <div className="relative flex flex-col px-4 my-4 gap-4">
             <div className="flex">
