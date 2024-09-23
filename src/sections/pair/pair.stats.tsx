@@ -26,7 +26,7 @@ const StatsView = () => {
             (v) => !Number.isInteger(Number(v))
           ) as unknown as TimeFrame[]
         ).map((state, index) => (
-          <li
+          <li key={index}
             className={cn(
               "w-full cursor-pointer flex flex-col items-center justify-center pt-2 pb-3",
               index != 0 && "border-l-[1px]",
