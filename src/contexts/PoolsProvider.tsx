@@ -12,6 +12,7 @@ import { ComponentProps } from "@/types";
 import { convertFromLamports } from "@/utils/functions";
 import idl from "@/idl/solana_program.json";
 import { PoolData } from "@/app/trading/page";
+import axios from "axios";
 
 export const PoolsContext = createContext({
   pools: undefined as PoolData[] | undefined,
@@ -47,36 +48,36 @@ export default function PoolsProvider({ children }: ComponentProps) {
         }),
       });
       const data = await response.json();
-      const poolAssets = data?.result.map((pool: any) => {
+      const poolAssets = await Promise.all(data?.result.map(async (pool: any) => {
         let image = "";
-        // try {
-        //   const response = await fetch(pool.content.json_uri, {
-        //     method: "GET",
-        //     headers: {
-        //       "Content-Type": "application/json",
-        //     },
-        //   });
-        //   const data = await response.json();
-        //   image = data.image || "";
-        // } catch (err) {
-        //   console.log(err);
-        // }
+        console.log(pool.content)
+        try {
+          const response = await axios({
+            method: "GET",
+            url: pool.content.json_uri,
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          });
+          const data = await response.data;
+          image = data.image || "";
+        } catch (err) {
+          console.log(err);
+        }
 
         return {
           name: pool.content.metadata.name,
           symbol: pool.content.metadata.symbol,
           image,
         };
-      });
+      }));
 
       setPools(
         pools.map((pool, index) => {
           return {
             name: poolAssets[index].name,
             symbol: poolAssets[index].symbol,
-            image:
-              "https://tokenthumb-photon.tinyastro.io/uploads/sol/token/img_src/2862047/QmX3Vt2TzHhs7qeeNs5BmNZh6nH9Focw8bCncj5awKb6Vg.jpg",
-            // image: poolAssets[index].image,
+            image: poolAssets[index].image,
             address: pool.account.token.toBase58(),
             liquidity: convertFromLamports(pool.account.totalSupply - pool.account.reserveToken),
             marketCap: 60 - convertFromLamports(pool.account.reserveSol),

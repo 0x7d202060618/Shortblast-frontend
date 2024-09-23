@@ -24,7 +24,6 @@ export const launchTokenTransaction = async (
   launcherKey: PublicKey | null,
   mintKeypair: Keypair,
   connection: Connection,
-  pool_reg_KP: Keypair
 ) => {
   if (!launcherKey) return null;
   const transaction = await program.methods
@@ -82,7 +81,6 @@ export const launchTokenTransaction = async (
   const createPoolInstruction = await program.methods.createPool().accounts({
       payer: launcherKey,
       tokenMint: mintKeypair.publicKey,
-      poolRegistry: pool_reg_KP.publicKey,
       pool: pool,
       userTokenAccount: associatedTokenAccountAddress,
       poolTokenAccount: pool_token_account,
@@ -92,15 +90,7 @@ export const launchTokenTransaction = async (
       rent: SYSVAR_RENT_PUBKEY,
       systemProgram: SystemProgram.programId
   }).instruction();
-  transaction.add(
-    SystemProgram.createAccount({
-      fromPubkey: launcherKey,
-      newAccountPubkey: pool_reg_KP.publicKey,
-      lamports: await connection.getMinimumBalanceForRentExemption(8 + 128),
-      space: 8 + 128,
-      programId: program.programId,
-    })
-  );
+ 
   transaction.add(createPoolInstruction);
 
   return transaction;
