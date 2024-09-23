@@ -153,10 +153,7 @@ const TokenForm = () => {
         const formData = new FormData();
         formData.append("file", file);
 
-        console.log(
-          process.env.NEXT_PUBLIC_PINATA_API_KEY,
-          process.env.NEXT_PUBLIC_PINATA_API_SECRET
-        );
+        
         const response = await axios({
           method: "post",
           url: "https://api.pinata.cloud/pinning/pinFileToIPFS",
