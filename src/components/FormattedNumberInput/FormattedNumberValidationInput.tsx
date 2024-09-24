@@ -1,26 +1,28 @@
-'use client';
+"use client";
 
-import React from 'react';
+import React from "react";
 
-import FormattedNumberInput, { FormattedNumberInputProps } from '.';
-import { Text } from '..';
+import FormattedNumberInput, { FormattedNumberInputProps } from ".";
+import { Text } from "..";
 
-interface FormattedNumberValidationInputProps
-  extends FormattedNumberInputProps {
+interface FormattedNumberValidationInputProps extends FormattedNumberInputProps {
   validate: boolean;
   validationMessage: string;
   validationStyle: string;
 }
 
-const FormattedNumberValidationInput: React.FC<
-  FormattedNumberValidationInputProps
-> = ({ validate, validationMessage, validationStyle, ...props }) => {
+const FormattedNumberValidationInput: React.FC<FormattedNumberValidationInputProps> = ({
+  validate,
+  validationMessage,
+  validationStyle,
+  ...props
+}) => {
   return (
-    <div className='relative'>
+    <div className="relative">
       <FormattedNumberInput {...props} />
       {validate && (
-        <div className='absolute -bottom-5 -left-56 w-72'>
-          <Text variant={'sm'} className='text-danger'>
+        <div className="absolute -bottom-5 -left-56 w-72">
+          <Text variant={"sm"} className="text-danger">
             {validationMessage}
           </Text>
         </div>

@@ -81,7 +81,6 @@ svg:focus-visible {
   box-shadow: none !important;
 }
 
-
 /* custom wallet button  */
 .wallet-adapter-dropdown {
   @apply w-full;

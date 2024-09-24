@@ -23,7 +23,7 @@ export const launchTokenTransaction = async (
   program: Program,
   launcherKey: PublicKey | null,
   mintKeypair: Keypair,
-  connection: Connection,
+  connection: Connection
 ) => {
   if (!launcherKey) return null;
   const transaction = await program.methods
@@ -64,33 +64,30 @@ export const launchTokenTransaction = async (
   transaction.add(mintInstruction);
 
   const pool = PublicKey.findProgramAddressSync(
-    [
-      Buffer.from(POOL_SEED_PREFIX),
-      mintKeypair.publicKey.toBuffer(),
-    ],
+    [Buffer.from(POOL_SEED_PREFIX), mintKeypair.publicKey.toBuffer()],
     program.programId
   )[0];
   const pool_token_account = getAssociatedTokenAddressSync(mintKeypair.publicKey, pool, true);
   const pool_sol_vault = PublicKey.findProgramAddressSync(
-    [
-      Buffer.from(SOL_VAULT_PREFIX),
-      mintKeypair.publicKey.toBuffer(),
-    ],
+    [Buffer.from(SOL_VAULT_PREFIX), mintKeypair.publicKey.toBuffer()],
     program.programId
   )[0];
-  const createPoolInstruction = await program.methods.createPool().accounts({
+  const createPoolInstruction = await program.methods
+    .createPool()
+    .accounts({
       payer: launcherKey,
       tokenMint: mintKeypair.publicKey,
       pool: pool,
       userTokenAccount: associatedTokenAccountAddress,
       poolTokenAccount: pool_token_account,
-      poolSolVault : pool_sol_vault,
+      poolSolVault: pool_sol_vault,
       tokenProgram: TOKEN_PROGRAM_ID,
       associatedTokenProgram: ASSOCIATED_TOKEN_PROGRAM_ID,
       rent: SYSVAR_RENT_PUBKEY,
-      systemProgram: SystemProgram.programId
-  }).instruction();
- 
+      systemProgram: SystemProgram.programId,
+    })
+    .instruction();
+
   transaction.add(createPoolInstruction);
 
   return transaction;

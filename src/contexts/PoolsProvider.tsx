@@ -48,29 +48,31 @@ export default function PoolsProvider({ children }: ComponentProps) {
         }),
       });
       const data = await response.json();
-      const poolAssets = await Promise.all(data?.result.map(async (pool: any) => {
-        let image = "";
-        console.log(pool.content)
-        try {
-          const response = await axios({
-            method: "GET",
-            url: pool.content.json_uri,
-            headers: {
-              "Content-Type": "multipart/form-data",
-            },
-          });
-          const data = await response.data;
-          image = data.image || "";
-        } catch (err) {
-          console.log(err);
-        }
+      const poolAssets = await Promise.all(
+        data?.result.map(async (pool: any) => {
+          let image = "";
+          console.log(pool.content);
+          try {
+            const response = await axios({
+              method: "GET",
+              url: pool.content.json_uri,
+              headers: {
+                "Content-Type": "multipart/form-data",
+              },
+            });
+            const data = await response.data;
+            image = data.image || "";
+          } catch (err) {
+            console.log(err);
+          }
 
-        return {
-          name: pool.content.metadata.name,
-          symbol: pool.content.metadata.symbol,
-          image,
-        };
-      }));
+          return {
+            name: pool.content.metadata.name,
+            symbol: pool.content.metadata.symbol,
+            image,
+          };
+        })
+      );
 
       setPools(
         pools.map((pool, index) => {

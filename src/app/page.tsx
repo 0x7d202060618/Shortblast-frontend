@@ -5,7 +5,6 @@ import { Separator } from "@/components/ui/separator";
 import TokenForm from "@/sections/token/token.form";
 
 export default function Home() {
- 
   return (
     <main className="flex min-h-screen flex-col items-center justify-between py-10 px-5 md:px-24">
       <div className="max-w-5xl w-full">

@@ -110,7 +110,6 @@ const TokenForm = () => {
     maxSize: 4 * 1024 * 1024,
   } satisfies DropzoneOptions;
 
-
   async function onSubmit(values: FormSchema) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
@@ -130,12 +129,20 @@ const TokenForm = () => {
     let mintKeypair = Keypair.generate();
 
     const { name, symbol } = values;
-    let createTokenTransaction = await launchTokenTransaction(name, symbol, metadataUrl, program, publicKey, mintKeypair, connection)
-    if(!createTokenTransaction) return alert("Unable to send transaction");
+    let createTokenTransaction = await launchTokenTransaction(
+      name,
+      symbol,
+      metadataUrl,
+      program,
+      publicKey,
+      mintKeypair,
+      connection
+    );
+    if (!createTokenTransaction) return alert("Unable to send transaction");
     let txsig = await sendTransaction(createTokenTransaction, connection, {
       signers: [mintKeypair],
     });
-    console.log("Successfully created token : ", `https://solscan.io/tx/${txsig}?cluster=devnet`)
+    console.log("Successfully created token : ", `https://solscan.io/tx/${txsig}?cluster=devnet`);
   }
 
   async function uploadImagePinata(file: File) {
@@ -144,7 +151,6 @@ const TokenForm = () => {
         const formData = new FormData();
         formData.append("file", file);
 
-        
         const response = await axios({
           method: "post",
           url: "https://api.pinata.cloud/pinning/pinFileToIPFS",
@@ -192,7 +198,6 @@ const TokenForm = () => {
       alert({ type: "error", message: "Upload failed" });
     }
   }
-  
 
   return (
     <Form {...form}>
@@ -263,7 +268,7 @@ const TokenForm = () => {
                             <Image
                               src={URL.createObjectURL(field.value)}
                               style={{
-                                objectFit: "contain"
+                                objectFit: "contain",
                               }}
                               alt={field.value.name}
                               className="rounded-md w-full h-full"
@@ -287,7 +292,7 @@ const TokenForm = () => {
                   <FileUploader
                     value={field.value ? [field.value] : null}
                     onValueChange={(values) => field.onChange(values ? values[0] : null)}
-                    dropzoneOptions={{...dropZoneConfig, maxFiles: 1}}
+                    dropzoneOptions={{ ...dropZoneConfig, maxFiles: 1 }}
                     className="relative space-y-1 max-w-full"
                   >
                     <FileInput>

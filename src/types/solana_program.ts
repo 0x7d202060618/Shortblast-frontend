@@ -5,74 +5,50 @@
  * IDL can be found at `target/idl/solana_program.json`.
  */
 export type SolanaProgram = {
-  "address": "xCkGu7BPx6b3rPQxPyw3ZfFkHFPSGe3cWJG15zBpump",
-  "metadata": {
-    "name": "solanaProgram",
-    "version": "0.1.0",
-    "spec": "0.1.0",
-    "description": "Created with Anchor"
-  },
-  "instructions": [
+  address: "xCkGu7BPx6b3rPQxPyw3ZfFkHFPSGe3cWJG15zBpump";
+  metadata: {
+    name: "solanaProgram";
+    version: "0.1.0";
+    spec: "0.1.0";
+    description: "Created with Anchor";
+  };
+  instructions: [
     {
-      "name": "createPool",
-      "discriminator": [
-        233,
-        146,
-        209,
-        142,
-        207,
-        104,
-        64,
-        188
-      ],
-      "accounts": [
+      name: "createPool";
+      discriminator: [233, 146, 209, 142, 207, 104, 64, 188];
+      accounts: [
         {
-          "name": "pool",
-          "writable": true,
-          "pda": {
-            "seeds": [
+          name: "pool";
+          writable: true;
+          pda: {
+            seeds: [
               {
-                "kind": "const",
-                "value": [
-                  108,
-                  105,
-                  113,
-                  117,
-                  105,
-                  100,
-                  105,
-                  116,
-                  121,
-                  95,
-                  112,
-                  111,
-                  111,
-                  108
-                ]
+                kind: "const";
+                value: [108, 105, 113, 117, 105, 100, 105, 116, 121, 95, 112, 111, 111, 108];
               },
               {
-                "kind": "account",
-                "path": "tokenMint"
-              }
-            ]
-          }
+                kind: "account";
+                path: "tokenMint";
+              },
+            ];
+          };
         },
         {
-          "name": "tokenMint",
-          "writable": true
+          name: "tokenMint";
+          writable: true;
         },
         {
-          "name": "userTokenAccount",
-          "writable": true,
-          "pda": {
-            "seeds": [
+          name: "userTokenAccount";
+          writable: true;
+          pda: {
+            seeds: [
               {
-                "kind": "account",
-                "path": "payer"
+                kind: "account";
+                path: "payer";
               },
               {
-                "kind": "const",
-                "value": [
+                kind: "const";
+                value: [
                   6,
                   221,
                   246,
@@ -104,17 +80,17 @@ export type SolanaProgram = {
                   126,
                   255,
                   0,
-                  169
-                ]
+                  169,
+                ];
               },
               {
-                "kind": "account",
-                "path": "tokenMint"
-              }
-            ],
-            "program": {
-              "kind": "const",
-              "value": [
+                kind: "account";
+                path: "tokenMint";
+              },
+            ];
+            program: {
+              kind: "const";
+              value: [
                 140,
                 151,
                 37,
@@ -146,23 +122,23 @@ export type SolanaProgram = {
                 219,
                 233,
                 248,
-                89
-              ]
-            }
-          }
+                89,
+              ];
+            };
+          };
         },
         {
-          "name": "poolTokenAccount",
-          "writable": true,
-          "pda": {
-            "seeds": [
+          name: "poolTokenAccount";
+          writable: true;
+          pda: {
+            seeds: [
               {
-                "kind": "account",
-                "path": "pool"
+                kind: "account";
+                path: "pool";
               },
               {
-                "kind": "const",
-                "value": [
+                kind: "const";
+                value: [
                   6,
                   221,
                   246,
@@ -194,17 +170,17 @@ export type SolanaProgram = {
                   126,
                   255,
                   0,
-                  169
-                ]
+                  169,
+                ];
               },
               {
-                "kind": "account",
-                "path": "tokenMint"
-              }
-            ],
-            "program": {
-              "kind": "const",
-              "value": [
+                kind: "account";
+                path: "tokenMint";
+              },
+            ];
+            program: {
+              kind: "const";
+              value: [
                 140,
                 151,
                 37,
@@ -236,19 +212,19 @@ export type SolanaProgram = {
                 219,
                 233,
                 248,
-                89
-              ]
-            }
-          }
+                89,
+              ];
+            };
+          };
         },
         {
-          "name": "poolSolVault",
-          "writable": true,
-          "pda": {
-            "seeds": [
+          name: "poolSolVault";
+          writable: true;
+          pda: {
+            seeds: [
               {
-                "kind": "const",
-                "value": [
+                kind: "const";
+                value: [
                   108,
                   105,
                   113,
@@ -267,149 +243,122 @@ export type SolanaProgram = {
                   97,
                   117,
                   108,
-                  116
-                ]
+                  116,
+                ];
               },
               {
-                "kind": "account",
-                "path": "tokenMint"
-              }
-            ]
-          }
+                kind: "account";
+                path: "tokenMint";
+              },
+            ];
+          };
         },
         {
-          "name": "payer",
-          "writable": true,
-          "signer": true
+          name: "payer";
+          writable: true;
+          signer: true;
         },
         {
-          "name": "tokenProgram",
-          "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+          name: "tokenProgram";
+          address: "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA";
         },
         {
-          "name": "associatedTokenProgram",
-          "address": "ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL"
+          name: "associatedTokenProgram";
+          address: "ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL";
         },
         {
-          "name": "rent",
-          "address": "SysvarRent111111111111111111111111111111111"
+          name: "rent";
+          address: "SysvarRent111111111111111111111111111111111";
         },
         {
-          "name": "systemProgram",
-          "address": "11111111111111111111111111111111"
-        }
-      ],
-      "args": []
+          name: "systemProgram";
+          address: "11111111111111111111111111111111";
+        },
+      ];
+      args: [];
     },
     {
-      "name": "createToken",
-      "discriminator": [
-        84,
-        52,
-        204,
-        228,
-        24,
-        140,
-        234,
-        75
-      ],
-      "accounts": [
+      name: "createToken";
+      discriminator: [84, 52, 204, 228, 24, 140, 234, 75];
+      accounts: [
         {
-          "name": "payer",
-          "writable": true,
-          "signer": true
+          name: "payer";
+          writable: true;
+          signer: true;
         },
         {
-          "name": "mintAccount",
-          "writable": true,
-          "signer": true
+          name: "mintAccount";
+          writable: true;
+          signer: true;
         },
         {
-          "name": "metadataAccount",
-          "writable": true,
-          "pda": {
-            "seeds": [
+          name: "metadataAccount";
+          writable: true;
+          pda: {
+            seeds: [
               {
-                "kind": "const",
-                "value": [
-                  109,
-                  101,
-                  116,
-                  97,
-                  100,
-                  97,
-                  116,
-                  97
-                ]
+                kind: "const";
+                value: [109, 101, 116, 97, 100, 97, 116, 97];
               },
               {
-                "kind": "account",
-                "path": "tokenMetadataProgram"
+                kind: "account";
+                path: "tokenMetadataProgram";
               },
               {
-                "kind": "account",
-                "path": "mintAccount"
-              }
-            ],
-            "program": {
-              "kind": "account",
-              "path": "tokenMetadataProgram"
-            }
-          }
+                kind: "account";
+                path: "mintAccount";
+              },
+            ];
+            program: {
+              kind: "account";
+              path: "tokenMetadataProgram";
+            };
+          };
         },
         {
-          "name": "tokenProgram",
-          "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+          name: "tokenProgram";
+          address: "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA";
         },
         {
-          "name": "tokenMetadataProgram",
-          "address": "metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s"
+          name: "tokenMetadataProgram";
+          address: "metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s";
         },
         {
-          "name": "systemProgram",
-          "address": "11111111111111111111111111111111"
+          name: "systemProgram";
+          address: "11111111111111111111111111111111";
         },
         {
-          "name": "rent",
-          "address": "SysvarRent111111111111111111111111111111111"
-        }
-      ],
-      "args": [
+          name: "rent";
+          address: "SysvarRent111111111111111111111111111111111";
+        },
+      ];
+      args: [
         {
-          "name": "tokenName",
-          "type": "string"
+          name: "tokenName";
+          type: "string";
         },
         {
-          "name": "tokenSymbol",
-          "type": "string"
+          name: "tokenSymbol";
+          type: "string";
         },
         {
-          "name": "tokenUri",
-          "type": "string"
-        }
-      ]
+          name: "tokenUri";
+          type: "string";
+        },
+      ];
     },
     {
-      "name": "initializeCurve",
-      "discriminator": [
-        170,
-        84,
-        186,
-        253,
-        131,
-        149,
-        95,
-        213
-      ],
-      "accounts": [
+      name: "initializeCurve";
+      discriminator: [170, 84, 186, 253, 131, 149, 95, 213];
+      accounts: [
         {
-          "name": "dexConfigurationAccount",
-          "writable": true,
-          "pda": {
-            "seeds": [
+          name: "dexConfigurationAccount";
+          writable: true;
+          pda: {
+            seeds: [
               {
-                "kind": "const",
-                "value": [
+                kind: "const";
+                value: [
                   67,
                   117,
                   114,
@@ -427,74 +376,65 @@ export type SolanaProgram = {
                   116,
                   105,
                   111,
-                  110
-                ]
-              }
-            ]
-          }
+                  110,
+                ];
+              },
+            ];
+          };
         },
         {
-          "name": "poolRegistry",
-          "writable": true
+          name: "poolRegistry";
+          writable: true;
         },
         {
-          "name": "admin",
-          "writable": true,
-          "signer": true
+          name: "admin";
+          writable: true;
+          signer: true;
         },
         {
-          "name": "rent",
-          "address": "SysvarRent111111111111111111111111111111111"
+          name: "rent";
+          address: "SysvarRent111111111111111111111111111111111";
         },
         {
-          "name": "systemProgram",
-          "address": "11111111111111111111111111111111"
-        }
-      ],
-      "args": [
+          name: "systemProgram";
+          address: "11111111111111111111111111111111";
+        },
+      ];
+      args: [
         {
-          "name": "fees",
-          "type": "f64"
-        }
-      ]
+          name: "fees";
+          type: "f64";
+        },
+      ];
     },
     {
-      "name": "mintToken",
-      "discriminator": [
-        172,
-        137,
-        183,
-        14,
-        207,
-        110,
-        234,
-        56
-      ],
-      "accounts": [
+      name: "mintToken";
+      discriminator: [172, 137, 183, 14, 207, 110, 234, 56];
+      accounts: [
         {
-          "name": "mintAuthority",
-          "writable": true,
-          "signer": true
+          name: "mintAuthority";
+          writable: true;
+          signer: true;
         },
         {
-          "name": "recipient"
+          name: "recipient";
         },
         {
-          "name": "mintAccount",
-          "writable": true
+          name: "mintAccount";
+          writable: true;
         },
         {
-          "name": "associatedTokenAccount",
-          "writable": true,
-          "pda": {
-            "seeds": [
+          name: "associatedTokenAccount";
+          writable: true;
+          pda: {
+            seeds: [
               {
-                "kind": "account",
-                "path": "recipient"
+                kind: "account";
+                path: "recipient";
               },
               {
-                "kind": "const",
-                "value": [
+                kind: "const";
+                value: [
                   6,
                   221,
                   246,
@@ -526,17 +466,17 @@ export type SolanaProgram = {
                   126,
                   255,
                   0,
-                  169
-                ]
+                  169,
+                ];
               },
               {
-                "kind": "account",
-                "path": "mintAccount"
-              }
-            ],
-            "program": {
-              "kind": "const",
-              "value": [
+                kind: "account";
+                path: "mintAccount";
+              },
+            ];
+            program: {
+              kind: "const";
+              value: [
                 140,
                 151,
                 37,
@@ -568,228 +508,201 @@ export type SolanaProgram = {
                 219,
                 233,
                 248,
-                89
-              ]
-            }
-          }
+                89,
+              ];
+            };
+          };
         },
         {
-          "name": "tokenProgram",
-          "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+          name: "tokenProgram";
+          address: "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA";
         },
         {
-          "name": "associatedTokenProgram",
-          "address": "ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL"
+          name: "associatedTokenProgram";
+          address: "ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL";
         },
         {
-          "name": "systemProgram",
-          "address": "11111111111111111111111111111111"
-        }
-      ],
-      "args": []
-    }
-  ],
-  "accounts": [
+          name: "systemProgram";
+          address: "11111111111111111111111111111111";
+        },
+      ];
+      args: [];
+    },
+  ];
+  accounts: [
     {
-      "name": "curveConfiguration",
-      "discriminator": [
-        225,
-        242,
-        252,
-        198,
-        63,
-        77,
-        56,
-        255
-      ]
+      name: "curveConfiguration";
+      discriminator: [225, 242, 252, 198, 63, 77, 56, 255];
     },
     {
-      "name": "liquidityPool",
-      "discriminator": [
-        66,
-        38,
-        17,
-        64,
-        188,
-        80,
-        68,
-        129
-      ]
+      name: "liquidityPool";
+      discriminator: [66, 38, 17, 64, 188, 80, 68, 129];
     },
     {
-      "name": "poolRegistry",
-      "discriminator": [
-        113,
-        149,
-        124,
-        60,
-        130,
-        240,
-        64,
-        157
-      ]
-    }
-  ],
-  "errors": [
+      name: "poolRegistry";
+      discriminator: [113, 149, 124, 60, 130, 240, 64, 157];
+    },
+  ];
+  errors: [
     {
-      "code": 6000,
-      "name": "duplicateTokenNotAllowed",
-      "msg": "Duplicate tokens are not allowed"
+      code: 6000;
+      name: "duplicateTokenNotAllowed";
+      msg: "Duplicate tokens are not allowed";
     },
     {
-      "code": 6001,
-      "name": "failedToAllocateShares",
-      "msg": "Failed to allocate shares"
+      code: 6001;
+      name: "failedToAllocateShares";
+      msg: "Failed to allocate shares";
     },
     {
-      "code": 6002,
-      "name": "failedToDeallocateShares",
-      "msg": "Failed to deallocate shares"
+      code: 6002;
+      name: "failedToDeallocateShares";
+      msg: "Failed to deallocate shares";
     },
     {
-      "code": 6003,
-      "name": "insufficientShares",
-      "msg": "Insufficient shares"
+      code: 6003;
+      name: "insufficientShares";
+      msg: "Insufficient shares";
     },
     {
-      "code": 6004,
-      "name": "insufficientFunds",
-      "msg": "Insufficient funds to swap"
+      code: 6004;
+      name: "insufficientFunds";
+      msg: "Insufficient funds to swap";
     },
     {
-      "code": 6005,
-      "name": "invalidAmount",
-      "msg": "Invalid amount to swap"
+      code: 6005;
+      name: "invalidAmount";
+      msg: "Invalid amount to swap";
     },
     {
-      "code": 6006,
-      "name": "invalidFee",
-      "msg": "Invalid fee"
+      code: 6006;
+      name: "invalidFee";
+      msg: "Invalid fee";
     },
     {
-      "code": 6007,
-      "name": "failedToAddLiquidity",
-      "msg": "Failed to add liquidity"
+      code: 6007;
+      name: "failedToAddLiquidity";
+      msg: "Failed to add liquidity";
     },
     {
-      "code": 6008,
-      "name": "failedToRemoveLiquidity",
-      "msg": "Failed to remove liquidity"
+      code: 6008;
+      name: "failedToRemoveLiquidity";
+      msg: "Failed to remove liquidity";
     },
     {
-      "code": 6009,
-      "name": "notEnoughToRemove",
-      "msg": "Sold token is not enough to remove pool"
+      code: 6009;
+      name: "notEnoughToRemove";
+      msg: "Sold token is not enough to remove pool";
     },
     {
-      "code": 6010,
-      "name": "notCreator",
-      "msg": "Not a pool creator"
+      code: 6010;
+      name: "notCreator";
+      msg: "Not a pool creator";
     },
     {
-      "code": 6011,
-      "name": "overflowOrUnderflowOccurred",
-      "msg": "Overflow or underflow occured"
+      code: 6011;
+      name: "overflowOrUnderflowOccurred";
+      msg: "Overflow or underflow occured";
     },
     {
-      "code": 6012,
-      "name": "tokenAmountToSellTooBig",
-      "msg": "Token amount is too big to sell"
+      code: 6012;
+      name: "tokenAmountToSellTooBig";
+      msg: "Token amount is too big to sell";
     },
     {
-      "code": 6013,
-      "name": "notEnoughSolInVault",
-      "msg": "SOL is not enough in vault"
+      code: 6013;
+      name: "notEnoughSolInVault";
+      msg: "SOL is not enough in vault";
     },
     {
-      "code": 6014,
-      "name": "notEnoughTokenInVault",
-      "msg": "Token is not enough in vault"
+      code: 6014;
+      name: "notEnoughTokenInVault";
+      msg: "Token is not enough in vault";
     },
     {
-      "code": 6015,
-      "name": "negativeNumber",
-      "msg": "Amount is negative"
-    }
-  ],
-  "types": [
+      code: 6015;
+      name: "negativeNumber";
+      msg: "Amount is negative";
+    },
+  ];
+  types: [
     {
-      "name": "curveConfiguration",
-      "type": {
-        "kind": "struct",
-        "fields": [
+      name: "curveConfiguration";
+      type: {
+        kind: "struct";
+        fields: [
           {
-            "name": "fees",
-            "type": "f64"
-          }
-        ]
-      }
+            name: "fees";
+            type: "f64";
+          },
+        ];
+      };
     },
     {
-      "name": "liquidityPool",
-      "type": {
-        "kind": "struct",
-        "fields": [
+      name: "liquidityPool";
+      type: {
+        kind: "struct";
+        fields: [
           {
-            "name": "creator",
-            "type": "pubkey"
+            name: "creator";
+            type: "pubkey";
           },
           {
-            "name": "token",
-            "type": "pubkey"
+            name: "token";
+            type: "pubkey";
           },
           {
-            "name": "totalSupply",
-            "type": "u64"
+            name: "totalSupply";
+            type: "u64";
           },
           {
-            "name": "reserveToken",
-            "type": "u64"
+            name: "reserveToken";
+            type: "u64";
           },
           {
-            "name": "reserveSol",
-            "type": "u64"
+            name: "reserveSol";
+            type: "u64";
           },
           {
-            "name": "bump",
-            "type": "u8"
+            name: "bump";
+            type: "u8";
           },
           {
-            "name": "createdAt",
-            "type": "i64"
-          }
-        ]
-      }
+            name: "createdAt";
+            type: "i64";
+          },
+        ];
+      };
     },
     {
-      "name": "poolRegistry",
-      "type": {
-        "kind": "struct",
-        "fields": [
+      name: "poolRegistry";
+      type: {
+        kind: "struct";
+        fields: [
           {
-            "name": "pools",
-            "type": {
-              "vec": {
-                "defined": {
-                  "name": "poolToken"
-                }
-              }
-            }
-          }
-        ]
-      }
+            name: "pools";
+            type: {
+              vec: {
+                defined: {
+                  name: "poolToken";
+                };
+              };
+            };
+          },
+        ];
+      };
     },
     {
-      "name": "poolToken",
-      "type": {
-        "kind": "struct",
-        "fields": [
+      name: "poolToken";
+      type: {
+        kind: "struct";
+        fields: [
           {
-            "name": "tokenMint",
-            "type": "pubkey"
-          }
-        ]
-      }
-    }
-  ]
+            name: "tokenMint";
+            type: "pubkey";
+          },
+        ];
+      };
+    },
+  ];
 };
