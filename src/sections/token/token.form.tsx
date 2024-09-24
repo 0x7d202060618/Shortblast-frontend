@@ -1,9 +1,9 @@
 "use client";
 
 import React, { useState } from "react";
-import { getAssociatedTokenAddressSync } from "@solana/spl-token";
-import { Keypair, PublicKey } from "@solana/web3.js";
-import { Program, BN } from "@coral-xyz/anchor";
+
+import { Keypair } from "@solana/web3.js";
+import { Program } from "@coral-xyz/anchor";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 
 import { useFieldArray, useForm } from "react-hook-form";
@@ -37,9 +37,6 @@ import { TokenMetadata } from "@/types/token";
 import idl from "@/idl/solana_program.json";
 import { Image } from "@/components";
 import { launchTokenTransaction } from "@/services/transactionServices";
-import { POOL_REGISTRY_SEED } from "@/utils/constants";
-import poolKey from "../../keys/pool_key.json";
-import { metadata } from "@/app/layout";
 
 const schema = z.object({
   symbol: z.string(),
@@ -78,11 +75,6 @@ const defaultValues: Partial<FormSchema> = {
   ],
   icon: null,
   banner: null,
-};
-
-const tokenProgramID = idl.address;
-const opts = {
-  preflightCommitment: "processed",
 };
 
 const TokenForm = () => {
@@ -291,9 +283,11 @@ const TokenForm = () => {
                   <FormLabel>Banner</FormLabel>
                   <FileUploader
                     value={field.value ? [field.value] : null}
-                    onValueChange={(values) => field.onChange(values ? values[0] : null)}
-                    dropzoneOptions={{ ...dropZoneConfig, maxFiles: 1 }}
-                    className="relative space-y-1 max-w-full"
+                    onValueChange={(values) => {
+                      field.onChange(values ? values[values.length - 1] : null);
+                    }}
+                    dropzoneOptions={dropZoneConfig}
+                    className="relative space-y-1"
                   >
                     <FileInput>
                       <FileUploaderContent className="h-36 bg-white bg-opacity-10">
@@ -302,7 +296,7 @@ const TokenForm = () => {
                             <Image
                               src={URL.createObjectURL(field.value)}
                               alt={field.value.name}
-                              className="object-cover rounded-md"
+                              className="rounded-md w-full h-full"
                               fill
                             />
                           </FileUploaderItem>
