@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -63,7 +64,7 @@ const Navbar = () => {
                     <li
                       className={`cursor-pointer border-b-[${
                         index < menu.length - 1 ? 1 : 0
-                      }px] border-[#FFFFFF33] px-[10px] py-[30px] text-[20px] lg:text-[15px] xl:text-[18px] text-white transition duration-300 ease-in hover:text-[#dfff16] lg:border-none lg:py-3 lg:px-[20px] xl:px-[30px] uppercase text-center`}
+                      }px] border-[#FFFFFF33] px-[10px] py-[30px] text-[20px] lg:text-[15px] xl:text-[18px] text-white transition duration-300 ease-in hover:text-rose-400 lg:border-none lg:py-3 lg:px-[20px] xl:px-[30px] uppercase text-center`}
                     >
                       {item?.title}
                     </li>

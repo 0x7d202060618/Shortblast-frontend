@@ -1,37 +1,27 @@
 "use client";
 
-import Head from "next/head";
-import { useState } from "react";
-import { useForm, SubmitHandler } from "react-hook-form";
-import { z } from "zod";
+import React from "react";
 
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
 import { Image } from "@/components";
 
-const subscribeSchema = z.object({
-  email: z.string().email({ message: "Please enter a valid email address." }),
-});
+// const subscribeSchema = z.object({
+//   email: z.string().email({ message: "Please enter a valid email address." }),
+// });
 
-type SubscribeFormInputs = z.infer<typeof subscribeSchema>;
+// type SubscribeFormInputs = z.infer<typeof subscribeSchema>;
 
 const ComingSoonPage = () => {
-  const [agreedTerms, setAgreedTerms] = useState(false);
-  const [submitted, setSubmitted] = useState(false);
+  // const [submitted, setSubmitted] = useState(false);
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<SubscribeFormInputs>({
-    resolver: zodResolver(subscribeSchema),
-  });
+  // const {
+  //   formState: { errors },
+  // } = useForm<SubscribeFormInputs>({
+  //   resolver: zodResolver(subscribeSchema),
+  // });
 
-  const onSubmit: SubmitHandler<SubscribeFormInputs> = (data) => {
-    setSubmitted(true);
-  };
+  // const onSubmit: SubmitHandler<SubscribeFormInputs> = (data) => {
+  //   setSubmitted(true);
+  // };
 
   return (
     <main className="flex flex-col items-center px-4 md:px-24 pt-[200px] md:pt-[300px]">

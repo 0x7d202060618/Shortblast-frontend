@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect } from "react";
+import React from "react";
 
 import { Separator } from "@/components/ui/separator";
 import TokenForm from "@/sections/token/token.form";
@@ -13,7 +13,7 @@ export default function Home() {
             <h3 className="text-2xl font-medium">
               Launch your token on{" "}
               <span className="italic">
-                SHORT<span className="text-[#dfff16]">BLAST</span>
+                SHORT<span className="text-rose-400">BLAST</span>
               </span>
             </h3>
           </div>

@@ -21,10 +21,9 @@ import {
 } from "@/components/ui/table";
 import TokenLogo from "@/components/TokenLogo";
 import { cn, truncateAddress } from "@/utils/functions";
-import { Icon, Text } from "@/components";
+import { Icon, PoolsListTableSkeleton, Text } from "@/components";
 import { CurrencyNumber } from "@/components/FormattedNumber";
 import { usePools } from "@/contexts/PoolsProvider";
-import PoolsListTableSkeleton from "@/components/Loader/skeleton-loader/PoolsListTableSkeleton";
 import { SOL_PRICE } from "@/utils/constants";
 
 export interface TokenData {

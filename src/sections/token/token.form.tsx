@@ -18,7 +18,7 @@ import {
   FileUploaderContent,
   FileUploaderItem,
 } from "@/components/extension/file-uploader";
-import { Button } from "@/components/ui/button";
+import Button from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
   Form,
@@ -31,12 +31,13 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { cn } from "@/utils/functions";
+import { cn, getErrorMessage } from "@/utils/functions";
 import TokenButton from "./token.button";
-import { TokenMetadata } from "@/types/token";
 import idl from "@/idl/solana_program.json";
 import { Image } from "@/components";
 import { launchTokenTransaction } from "@/services/transactionServices";
+import { uploadImagePinata, uploadMetaData } from "@/utils/web3";
+import Notification from "@/components/Notification";
 
 const schema = z.object({
   symbol: z.string(),
@@ -92,9 +93,7 @@ const TokenForm = () => {
   const { connection } = useConnection();
   const { publicKey, sendTransaction, wallet } = useWallet();
 
-  const [token, setToken] = useState({
-    tokenImageURL: "",
-  });
+  const [loading, setLoading] = useState(false);
 
   const dropZoneConfig = {
     multiple: true,
@@ -103,91 +102,53 @@ const TokenForm = () => {
   } satisfies DropzoneOptions;
 
   async function onSubmit(values: FormSchema) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    const iconUrl = await uploadImagePinata(values.icon);
-    const bannerUrl = await uploadImagePinata(values.banner);
-    const metadataUrl = await uploadMetaData({
-      name: values.name,
-      symbol: values.symbol,
-      description: values.description,
-      icon: iconUrl,
-      banner: bannerUrl,
-    });
-
-    const provider = { connection, wallet };
-    const program = new Program(idl as any, provider);
-
-    let mintKeypair = Keypair.generate();
-
-    const { name, symbol } = values;
-    let createTokenTransaction = await launchTokenTransaction(
-      name,
-      symbol,
-      metadataUrl,
-      program,
-      publicKey,
-      mintKeypair,
-      connection
-    );
-    if (!createTokenTransaction) return alert("Unable to send transaction");
-    let txsig = await sendTransaction(createTokenTransaction, connection, {
-      signers: [mintKeypair],
-    });
-    console.log("Successfully created token : ", `https://solscan.io/tx/${txsig}?cluster=devnet`);
-  }
-
-  async function uploadImagePinata(file: File) {
-    if (file) {
-      try {
-        const formData = new FormData();
-        formData.append("file", file);
-
-        const response = await axios({
-          method: "post",
-          url: "https://api.pinata.cloud/pinning/pinFileToIPFS",
-          data: formData,
-          headers: {
-            pinata_api_key: process.env.NEXT_PUBLIC_PINATA_API_KEY,
-            pinata_secret_api_key: process.env.NEXT_PUBLIC_PINATA_API_SECRET,
-            "Content-Type": "multipart/form-data",
-          },
-        });
-
-        const ImgHash = `https://gateway.pinata.cloud/ipfs/${response.data.IpfsHash}`;
-        setToken({ ...token, tokenImageURL: ImgHash });
-        return ImgHash;
-      } catch (error: any) {
-        alert({ type: "error", message: "Upload image failed" });
-      }
-    }
-  }
-
-  async function uploadMetaData(tokenInfo: TokenMetadata) {
-    const data = JSON.stringify({
-      name: tokenInfo.name,
-      symbol: tokenInfo.symbol,
-      description: tokenInfo.description,
-      image: tokenInfo.icon,
-      banner: tokenInfo.banner,
-    });
+    setLoading(true);
     try {
-      const response = await axios({
-        method: "POST",
-        url: "https://api.pinata.cloud/pinning/pinJSONToIPFS",
-        data: data,
-        headers: {
-          pinata_api_key: process.env.NEXT_PUBLIC_PINATA_API_KEY,
-          pinata_secret_api_key: process.env.NEXT_PUBLIC_PINATA_API_SECRET,
-          "Content-Type": "application/json",
-        },
+      const iconUrl = await uploadImagePinata(values.icon);
+      const bannerUrl = await uploadImagePinata(values.banner);
+      const metadataUrl = await uploadMetaData({
+        name: values.name,
+        symbol: values.symbol,
+        description: values.description,
+        icon: iconUrl,
+        banner: bannerUrl,
       });
 
-      const url = `https://gateway.pinata.cloud/ipfs/${response.data.IpfsHash}`;
+      const provider = { connection, wallet };
+      const program = new Program(idl as any, provider);
 
-      return url;
-    } catch (error: any) {
-      alert({ type: "error", message: "Upload failed" });
+      let mintKeypair = Keypair.generate();
+
+      const { name, symbol } = values;
+      const createTokenTransaction = await launchTokenTransaction(
+        name,
+        symbol,
+        metadataUrl,
+        program,
+        publicKey,
+        mintKeypair,
+        connection
+      );
+      if (!createTokenTransaction) return alert("Unable to send transaction");
+      const signature = await sendTransaction(createTokenTransaction, connection, {
+        signers: [mintKeypair],
+      });
+
+      const txLink = `https://solscan.io/tx/${signature}?cluster=devnet`;
+
+      Notification({
+        type: "success",
+        title: "Successfully created token",
+        txLink,
+      });
+    } catch (err) {
+      Notification({
+        type: "error",
+        message: getErrorMessage(err),
+      });
+      throw new Error(`Error while creating new token: ${getErrorMessage(err)}`);
+    } finally {
+      setLoading(false);
     }
   }
 
@@ -367,7 +328,7 @@ const TokenForm = () => {
           </label>
         </div>
 
-        <TokenButton />
+        <TokenButton loading={loading} />
       </form>
     </Form>
   );

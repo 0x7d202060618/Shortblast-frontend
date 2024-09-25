@@ -3,16 +3,16 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 
 import { useQueryState } from "nuqs";
+import axios from "axios";
 
 import { Program } from "@coral-xyz/anchor";
 import { useConnection } from "@solana/wallet-adapter-react";
 
-import { getPools } from "@/app/provider/bondingProvider";
 import { ComponentProps } from "@/types";
 import { convertFromLamports } from "@/utils/functions";
 import idl from "@/idl/solana_program.json";
 import { PoolData } from "@/app/trading/page";
-import axios from "axios";
+import { getPools } from "@/utils/web3";
 
 export const PoolsContext = createContext({
   pools: undefined as PoolData[] | undefined,
@@ -51,7 +51,6 @@ export default function PoolsProvider({ children }: ComponentProps) {
       const poolAssets = await Promise.all(
         data?.result.map(async (pool: any) => {
           let image = "";
-          console.log(pool.content);
           try {
             const response = await axios({
               method: "GET",

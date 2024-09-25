@@ -70,3 +70,19 @@ export const formatNumber = (
 export const convertFromLamports = (amount: BN) => {
   return amount / new BN(10 ** 9);
 };
+
+export const getErrorMessage = (error: unknown): string => {
+  if (error instanceof Error) {
+    return error.message;
+  }
+
+  if (typeof error === "string") {
+    return error;
+  }
+
+  if (typeof error === "object" && error !== null && "message" in error) {
+    return (error as { message: string }).message;
+  }
+
+  return "An unknown error occurred";
+};

@@ -1,10 +1,12 @@
-import * as React from "react";
-import { Slot } from "@radix-ui/react-slot";
+import React, { ButtonHTMLAttributes } from "react";
 import { cva, type VariantProps } from "class-variance-authority";
 
 import { cn } from "@/utils/functions";
+import { ComponentProps } from "@/types";
+import Icon, { IconType } from "../Icon";
+import RoundLoader from "../Loader/round-loader";
 
-const buttonVariants = cva(
+export const buttonVariants = cva(
   "inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50",
   {
     variants: {
@@ -30,20 +32,67 @@ const buttonVariants = cva(
   }
 );
 
+export type ButtonVariantProps = VariantProps<typeof buttonVariants>;
 export interface ButtonProps
-  extends React.ButtonHTMLAttributes<HTMLButtonElement>,
-    VariantProps<typeof buttonVariants> {
-  asChild?: boolean;
+  extends ComponentProps,
+    ButtonHTMLAttributes<HTMLButtonElement>,
+    ButtonVariantProps {
+  label?: string;
+  startIcon?: IconType;
+  endIcon?: IconType;
+  isLoading?: boolean;
+  gradientEffect?: boolean;
 }
 
-const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, variant, size, asChild = false, ...props }, ref) => {
-    const Comp = asChild ? Slot : "button";
-    return (
-      <Comp className={cn(buttonVariants({ variant, size, className }))} ref={ref} {...props} />
-    );
-  }
-);
-Button.displayName = "Button";
+export default function Button({
+  label,
+  size,
+  startIcon,
+  endIcon,
+  isLoading,
+  gradientEffect = true,
+  className,
+  variant,
+  children,
+  ...props
+}: ButtonProps) {
+  return (
+    <button
+      className={cn(
+        props.disabled || isLoading || !gradientEffect ? "" : "button",
+        buttonVariants({ variant, size, className }),
+        className
+      )}
+      {...props}
+    >
+      {/* start icon */}
+      {!isLoading ? (
+        startIcon ? (
+          <Icon name={startIcon} size={4}>
+            {startIcon}
+          </Icon>
+        ) : (
+          <div />
+        )
+      ) : (
+        <div />
+      )}
 
-export { Button, buttonVariants };
+      {/* if loading, shows loading state, otherwise, shows label */}
+      <span className={cn((startIcon || isLoading || endIcon) && "mx-2")}>{label ?? children}</span>
+
+      {/* end icon */}
+      {!isLoading ? (
+        endIcon ? (
+          <Icon name={endIcon} size={5} className="duration-200 group-hover:translate-x-1">
+            {endIcon}
+          </Icon>
+        ) : (
+          <div />
+        )
+      ) : (
+        <RoundLoader color="#FFFFFF" visible={isLoading} />
+      )}
+    </button>
+  );
+}

@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { PoolData } from "@/app/trading/page";
 import { Image, Text, TokenLogo } from "@/components";
 import FormattedNumberInput from "@/components/FormattedNumberInput";
-import { Button } from "@/components/ui/button";
+import Button from "@/components/ui/button";
 import { cn } from "@/utils/functions";
 
 // Define the OrderType enum
@@ -147,7 +147,7 @@ const OrderView = ({ pool }: { pool: PoolData }) => {
             </div>
 
             <Button
-              className="w-full bg-[#dfff16] hover:opacity-80 hover:bg-[#dfff16] transition-all text-md text-bold text-black rounded-full"
+              className="w-full bg-rose-400 hover:opacity-80 hover:bg-rose-400 transition-all text-md text-bold text-black rounded-full"
               disabled
             >
               {OrderTypeLabel[orderType as OrderType]}
