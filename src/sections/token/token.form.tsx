@@ -9,7 +9,6 @@ import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { useFieldArray, useForm } from "react-hook-form";
 import { DropzoneOptions } from "react-dropzone";
 import { z } from "zod";
-import axios from "axios";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import {
@@ -94,6 +93,7 @@ const TokenForm = () => {
   const { publicKey, sendTransaction, wallet } = useWallet();
 
   const [loading, setLoading] = useState(false);
+  const [agreed, setAgreed] = useState(false);
 
   const dropZoneConfig = {
     multiple: true,
@@ -318,7 +318,11 @@ const TokenForm = () => {
           />
         </div>
         <div className="flex items-center justify-center space-x-2 !mt-8">
-          <Checkbox id="terms" />
+          <Checkbox
+            id="terms"
+            checked={agreed}
+            onCheckedChange={(value) => setAgreed(value as boolean)}
+          />
           <label
             htmlFor="terms"
             className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-pointer"
@@ -328,7 +332,7 @@ const TokenForm = () => {
           </label>
         </div>
 
-        <TokenButton loading={loading} />
+        <TokenButton loading={loading} disabled={!agreed || loading} />
       </form>
     </Form>
   );
