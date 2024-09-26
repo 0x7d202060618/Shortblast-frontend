@@ -9,10 +9,11 @@ import { Program } from "@coral-xyz/anchor";
 import { useConnection } from "@solana/wallet-adapter-react";
 
 import { ComponentProps } from "@/types";
-import { convertFromLamports } from "@/utils/functions";
+import { calcTokenPrice, convertFromLamports } from "@/utils/functions";
 import idl from "@/idl/solana_program.json";
 import { PoolData } from "@/app/trading/page";
 import { getPools } from "@/utils/web3";
+import { SOL_PRICE } from "@/utils/constants";
 
 export const PoolsContext = createContext({
   pools: undefined as PoolData[] | undefined,
@@ -81,14 +82,9 @@ export default function PoolsProvider({ children }: ComponentProps) {
             image: poolAssets[index].image,
             address: pool.account.token.toBase58(),
             liquidity: convertFromLamports(pool.account.totalSupply - pool.account.reserveToken),
-            marketCap: 60 - convertFromLamports(pool.account.reserveSol),
-            price:
-              0.0615 *
-              0.0003606 *
-              Math.exp(
-                0.0003606 *
-                  convertFromLamports(pool.account.totalSupply - pool.account.reserveToken)
-              ),
+            marketCap: (convertFromLamports(pool.account.reserveSol) - 60) * SOL_PRICE,
+            price: calcTokenPrice(pool.account.totalSupply - pool.account.reserveToken, SOL_PRICE),
+             
           };
         })
       );

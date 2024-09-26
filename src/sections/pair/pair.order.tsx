@@ -1,10 +1,16 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import { PoolData } from "@/app/trading/page";
 import { Image, Text, TokenLogo } from "@/components";
 import FormattedNumberInput from "@/components/FormattedNumberInput";
 import Button from "@/components/ui/button";
-import { cn } from "@/utils/functions";
+import { cn, getTokenBalance } from "@/utils/functions";
+import { buyTransaction, sellTransaction } from "@/services/transactionServices";
+import { useConnection, useWallet } from "@solana/wallet-adapter-react";
+import { Program } from "@coral-xyz/anchor";
+import idl from "@/idl/solana_program.json";
+import { useQueryState } from "nuqs";
+import { PublicKey } from "@solana/web3.js";
 
 // Define the OrderType enum
 enum OrderType {
@@ -19,10 +25,17 @@ const OrderTypeLabel = {
 };
 
 const OrderView = ({ pool }: { pool: PoolData }) => {
-  const total = 1000;
+
+  const { connection } = useConnection();
+  const { publicKey, sendTransaction, wallet } = useWallet();
+  const provider = { connection, wallet };
+  const program = new Program(idl as any, provider);
+
+  const [address] = useQueryState("address");
 
   const [buyAmount, setBuyAmount] = useState("");
   const [sellAmount, setSellAmount] = useState("");
+  const [total, setTotal] = useState(0);
   const [slippage, setSlippage] = useState("");
   const [orderType, setOrderType] = useState<OrderType | undefined>(OrderType.Buy);
 
@@ -30,6 +43,38 @@ const OrderView = ({ pool }: { pool: PoolData }) => {
     setOrderType((prev) => (prev === state ? undefined : state));
   };
 
+  const onOrder = async () => {
+    if (!address || !publicKey) return;
+    let orderTransaction = null;
+    if(orderType === OrderType.Buy) {
+      orderTransaction = await buyTransaction(
+        publicKey,
+        Number(buyAmount),
+        new PublicKey(address),
+        program
+      );
+    }
+    else if (orderType === OrderType.Sell) {
+      orderTransaction = await sellTransaction(
+        publicKey,
+        Number(sellAmount),
+        new PublicKey(address),
+        program
+      );
+    }
+    if(!orderTransaction) return;
+    const signature = await sendTransaction(orderTransaction, connection, {
+    });
+    console.log(signature)
+  };
+
+
+  useEffect(() => {
+    (async () => {
+      const tokenAmount = await getTokenBalance(publicKey?.toBase58(), address, connection)
+      setTotal(tokenAmount);      
+    })();
+  }, [])
   return (
     <div className="w-full bg-gray-900 border-[1px] border-gray-800 rounded-md overflow-hidden">
       <ul className="text-[12px] font-medium text-center flex text-gray-400">
@@ -148,7 +193,7 @@ const OrderView = ({ pool }: { pool: PoolData }) => {
 
             <Button
               className="w-full bg-rose-400 hover:opacity-80 hover:bg-rose-400 transition-all text-md text-bold text-black rounded-full"
-              disabled
+              onClick={onOrder}
             >
               {OrderTypeLabel[orderType as OrderType]}
             </Button>
