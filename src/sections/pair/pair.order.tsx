@@ -64,6 +64,7 @@ const OrderView = ({ pool }: { pool: PoolData }) => {
     }
     if(!orderTransaction) return;
     const signature = await sendTransaction(orderTransaction, connection, {
+      skipPreflight: true
     });
     console.log(signature)
   };
