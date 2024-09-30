@@ -1,6 +1,7 @@
-import { POOL_REGISTRY_SEED, POOL_SEED_PREFIX, SOL_VAULT_PREFIX } from "@/utils/constants";
+import { CURVE_SEED, POOL_REGISTRY_SEED, POOL_SEED_PREFIX, SOL_VAULT_PREFIX } from "@/utils/constants";
 import { BN, Program } from "@coral-xyz/anchor";
 import { ASSOCIATED_PROGRAM_ID } from "@coral-xyz/anchor/dist/cjs/utils/token";
+import * as anchor from "@coral-xyz/anchor";
 import {
   ASSOCIATED_TOKEN_PROGRAM_ID,
   getAssociatedTokenAddress,
@@ -15,6 +16,7 @@ import {
   SYSVAR_RENT_PUBKEY,
   Transaction,
 } from "@solana/web3.js";
+import { convertToLamports } from "@/utils/functions";
 
 export const launchTokenTransaction = async (
   name: string,
@@ -92,3 +94,87 @@ export const launchTokenTransaction = async (
 
   return transaction;
 };
+
+
+export const buyTransaction = async (user: PublicKey, amount: number, token_mint: PublicKey, program: Program) => {
+    const [curveConfig] = PublicKey.findProgramAddressSync(
+      [Buffer.from(CURVE_SEED)],
+      program.programId
+    );
+    const pool = PublicKey.findProgramAddressSync(
+                [
+                  Buffer.from(POOL_SEED_PREFIX),
+                  token_mint.toBuffer(),
+                ],
+                program.programId
+              )[0];
+    const pool_token_account = getAssociatedTokenAddressSync(token_mint, pool, true)
+    const [pool_sol_vault] = PublicKey.findProgramAddressSync(
+      [
+        Buffer.from(SOL_VAULT_PREFIX),
+        token_mint.toBuffer(),
+      ],
+      program.programId
+    );
+    const associatedTokenAccountAddress = getAssociatedTokenAddressSync(
+      token_mint,
+      user
+    );
+    const tx  = (await program.methods.buy(convertToLamports(amount)).accounts({
+      dexConfigurationAccount: curveConfig,
+      pool: pool,
+      user: user,
+      tokenMint: token_mint,
+      poolTokenAccount: pool_token_account,
+      poolSolVault : pool_sol_vault,
+      userTokenAccount: associatedTokenAccountAddress,
+      tokenProgram: TOKEN_PROGRAM_ID,
+      associatedTokenProgram: ASSOCIATED_TOKEN_PROGRAM_ID,
+      rent: SYSVAR_RENT_PUBKEY,
+      systemProgram: SystemProgram.programId
+    }).transaction());
+
+    return tx;
+}
+
+export const sellTransaction = async (user: PublicKey, amount: number, token_mint: PublicKey, program: Program) => {
+  const [curveConfig] = PublicKey.findProgramAddressSync(
+    [Buffer.from(CURVE_SEED)],
+    program.programId
+  );
+  const pool = PublicKey.findProgramAddressSync(
+              [
+                Buffer.from(POOL_SEED_PREFIX),
+                token_mint.toBuffer(),
+              ],
+              program.programId
+            )[0];
+  const pool_token_account = getAssociatedTokenAddressSync(token_mint, pool, true)
+  const [pool_sol_vault, bump] = PublicKey.findProgramAddressSync(
+    [
+      Buffer.from(SOL_VAULT_PREFIX),
+      token_mint.toBuffer(),
+    ],
+    program.programId
+  );
+  const associatedTokenAccountAddress = getAssociatedTokenAddressSync(
+    token_mint,
+    user
+  );
+  const _amount = convertToLamports(amount);
+  const tx  = (await program.methods.sell(convertToLamports(amount), bump).accounts({
+    dexConfigurationAccount: curveConfig,
+    pool: pool,
+    user: user,
+    tokenMint: token_mint,
+    poolTokenAccount: pool_token_account,
+    poolSolVault : pool_sol_vault,
+    userTokenAccount: associatedTokenAccountAddress,
+    tokenProgram: TOKEN_PROGRAM_ID,
+    associatedTokenProgram: ASSOCIATED_TOKEN_PROGRAM_ID,
+    rent: SYSVAR_RENT_PUBKEY,
+    systemProgram: SystemProgram.programId
+  }).transaction());
+
+  return tx;
+}

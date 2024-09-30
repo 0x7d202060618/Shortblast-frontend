@@ -132,7 +132,18 @@ const TokenForm = () => {
       if (!createTokenTransaction) return alert("Unable to send transaction");
       const signature = await sendTransaction(createTokenTransaction, connection, {
         signers: [mintKeypair],
+        skipPreflight: true
       });
+
+      const confirmation = await connection.confirmTransaction(signature);
+          
+      if (confirmation.value.err) {  
+        console.error('Transaction failed:', confirmation.value.err);  
+      } else {  
+        console.log('Transaction successful:', confirmation);  
+      }  
+      
+      console.log(signature)
 
       const txLink = `https://solscan.io/tx/${signature}?cluster=devnet`;
 
