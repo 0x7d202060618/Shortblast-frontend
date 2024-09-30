@@ -6,6 +6,7 @@ import { Keypair } from "@solana/web3.js";
 import { Program } from "@coral-xyz/anchor";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 
+import { Id, toast } from "react-toastify";
 import { useFieldArray, useForm } from "react-hook-form";
 import { DropzoneOptions } from "react-dropzone";
 import { z } from "zod";
@@ -103,7 +104,14 @@ const TokenForm = () => {
 
   async function onSubmit(values: FormSchema) {
     setLoading(true);
+    let toastId: Id = "";
     try {
+      toastId = Notification({
+        type: "warn",
+        title: "Uploading metadata",
+      });
+      toast.update(toastId, { autoClose: false, closeButton: false });
+
       const iconUrl = await uploadImagePinata(values.icon);
       const bannerUrl = await uploadImagePinata(values.banner);
       const metadataUrl = await uploadMetaData({
@@ -113,6 +121,7 @@ const TokenForm = () => {
         icon: iconUrl,
         banner: bannerUrl,
       });
+      toast.done(toastId);
 
       const provider = { connection, wallet };
       const program = new Program(idl as any, provider);
@@ -129,23 +138,28 @@ const TokenForm = () => {
         mintKeypair,
         connection
       );
-      if (!createTokenTransaction) return alert("Unable to send transaction");
+      if (!createTokenTransaction) throw new Error("Unable to send transaction");
+
       const signature = await sendTransaction(createTokenTransaction, connection, {
         signers: [mintKeypair],
-        skipPreflight: true
+        skipPreflight: true,
       });
 
-      const confirmation = await connection.confirmTransaction(signature);
-          
-      if (confirmation.value.err) {  
-        console.error('Transaction failed:', confirmation.value.err);  
-      } else {  
-        console.log('Transaction successful:', confirmation);  
-      }  
-      
-      console.log(signature)
-
       const txLink = `https://solscan.io/tx/${signature}?cluster=devnet`;
+      toastId = Notification({
+        type: "warn",
+        title: "Processing transaction",
+        txLink,
+      });
+      toast.update(toastId, { autoClose: false, closeButton: false });
+
+      const confirmation = await connection.confirmTransaction(signature);
+
+      if (confirmation.value.err) {
+        console.error("Transaction failed:", confirmation.value.err);
+      } else {
+        console.log("Transaction successful:", confirmation);
+      }
 
       Notification({
         type: "success",
@@ -160,6 +174,7 @@ const TokenForm = () => {
       throw new Error(`Error while creating new token: ${getErrorMessage(err)}`);
     } finally {
       setLoading(false);
+      toast.done(toastId);
     }
   }
 
