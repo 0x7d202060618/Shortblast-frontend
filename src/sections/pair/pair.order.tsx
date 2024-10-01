@@ -78,7 +78,7 @@ const OrderView = ({ pool }: { pool: PoolData }) => {
       const signature = await sendTransaction(orderTransaction, connection, {
         skipPreflight: true,
       });
-      const txLink = `https://solscan.io/tx/${signature}?cluster=devnet`;
+      const txLink = `https://explorer.solana.com/tx/${signature}?cluster=devnet`;
 
       Notification({
         type: "success",
@@ -189,7 +189,7 @@ const OrderView = ({ pool }: { pool: PoolData }) => {
                         "w-full cursor-pointer flex flex-col items-center justify-center py-1",
                         index !== 0 && "border-l-[1px]"
                       )}
-                      onClick={() => setSellAmount(String((total * value) / 100))}
+                      onClick={() => setSellAmount(String(Math.floor((total * value) / 100)))}
                     >
                       <span>{value}%</span>
                     </li>

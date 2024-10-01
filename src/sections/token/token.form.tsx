@@ -145,7 +145,7 @@ const TokenForm = () => {
         skipPreflight: true,
       });
 
-      const txLink = `https://solscan.io/tx/${signature}?cluster=devnet`;
+      const txLink = `https://explorer.solana.com/tx/${signature}?cluster=devnet`;
       toastId = Notification({
         type: "warn",
         title: "Processing transaction",
