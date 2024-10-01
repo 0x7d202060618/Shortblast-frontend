@@ -101,8 +101,8 @@ export const getErrorMessage = (error: unknown): string => {
 export const getTokenBalance = async (walletAddress:string | undefined, tokenMintAddress:string | null, connection:Connection) => {  
 
   // Convert wallet and mint addresses to PublicKey  
-  const walletPublicKey = new web3.PublicKey(walletAddress);  
-  const mintPublicKey = new web3.PublicKey(tokenMintAddress);  
+  const walletPublicKey = new web3.PublicKey(walletAddress!);  
+  const mintPublicKey = new web3.PublicKey(tokenMintAddress!);  
 
   // Get the associated token address  
   const associatedTokenAddress = await getAssociatedTokenAddress(  
@@ -113,7 +113,6 @@ export const getTokenBalance = async (walletAddress:string | undefined, tokenMin
   // Fetch the account info for the associated token address  
   try {  
       const accountInfo = await connection.getParsedAccountInfo(associatedTokenAddress);  
-      
       if (accountInfo.value === null) {  
           console.log('Token account does not exist. Ensure the wallet has tokens for this mint.');  
           return 0;  

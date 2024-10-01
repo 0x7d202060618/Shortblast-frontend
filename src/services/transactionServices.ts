@@ -7,7 +7,13 @@ import {
 import { Connection, Keypair, PublicKey, SystemProgram, SYSVAR_RENT_PUBKEY } from "@solana/web3.js";
 
 import { convertToLamports } from "@/utils/functions";
-import { CURVE_SEED, POOL_SEED_PREFIX, SOL_VAULT_PREFIX } from "@/utils/constants";
+import {
+  CURVE_SEED,
+  POOL_SEED_PREFIX,
+  SHORT_POOL_SEED,
+  SHORT_POOL_SOL_VAULT,
+  SOL_VAULT_PREFIX,
+} from "@/utils/constants";
 
 export const launchTokenTransaction = async (
   name: string,
@@ -65,23 +71,56 @@ export const launchTokenTransaction = async (
     [Buffer.from(SOL_VAULT_PREFIX), mintKeypair.publicKey.toBuffer()],
     program.programId
   )[0];
-  const createPoolInstruction = await program.methods
-    .createPool()
-    .accounts({
-      payer: launcherKey,
-      tokenMint: mintKeypair.publicKey,
-      pool: pool,
-      userTokenAccount: associatedTokenAccountAddress,
-      poolTokenAccount: pool_token_account,
-      poolSolVault: pool_sol_vault,
-      tokenProgram: TOKEN_PROGRAM_ID,
-      associatedTokenProgram: ASSOCIATED_TOKEN_PROGRAM_ID,
-      rent: SYSVAR_RENT_PUBKEY,
-      systemProgram: SystemProgram.programId,
-    })
-    .instruction();
 
-  transaction.add(createPoolInstruction);
+  const short_pool = PublicKey.findProgramAddressSync(
+    [Buffer.from(SHORT_POOL_SEED), mintKeypair.publicKey.toBuffer()],
+    program.programId
+  )[0];
+  const short_pool_token_account = getAssociatedTokenAddressSync(
+    mintKeypair.publicKey,
+    short_pool,
+    true
+  );
+  const short_pool_sol_vault = PublicKey.findProgramAddressSync(
+    [Buffer.from(SHORT_POOL_SOL_VAULT), mintKeypair.publicKey.toBuffer()],
+    program.programId
+  )[0];
+
+  transaction.add(
+    await program.methods
+      .createPool()
+      .accounts({
+        payer: launcherKey,
+        tokenMint: mintKeypair.publicKey,
+        pool: pool,
+        userTokenAccount: associatedTokenAccountAddress,
+        poolTokenAccount: pool_token_account,
+        poolSolVault: pool_sol_vault,
+        tokenProgram: TOKEN_PROGRAM_ID,
+        associatedTokenProgram: ASSOCIATED_TOKEN_PROGRAM_ID,
+        rent: SYSVAR_RENT_PUBKEY,
+        systemProgram: SystemProgram.programId,
+      })
+      .instruction()
+  );
+
+  transaction.add(
+    await program.methods
+      .createShortPool()
+      .accounts({
+        payer: launcherKey,
+        tokenMint: mintKeypair.publicKey,
+        pool: short_pool,
+        userTokenAccount: associatedTokenAccountAddress,
+        poolTokenAccount: short_pool_token_account,
+        poolSolVault: short_pool_sol_vault,
+        tokenProgram: TOKEN_PROGRAM_ID,
+        associatedTokenProgram: ASSOCIATED_TOKEN_PROGRAM_ID,
+        rent: SYSVAR_RENT_PUBKEY,
+        systemProgram: SystemProgram.programId,
+      })
+      .instruction()
+  );
 
   return transaction;
 };
