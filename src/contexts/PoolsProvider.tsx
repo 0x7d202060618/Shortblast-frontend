@@ -81,7 +81,7 @@ export default function PoolsProvider({ children }: ComponentProps) {
             symbol: poolAssets[index].symbol,
             image: poolAssets[index].image,
             address: pool.account.token.toBase58(),
-            liquidity: convertFromLamports(pool.account.totalSupply - pool.account.reserveToken),
+            liquidity: convertFromLamports(pool.account.reserveSol) * SOL_PRICE,
             marketCap: (convertFromLamports(pool.account.reserveSol) - 60) * SOL_PRICE,
             price: calcTokenPrice(pool.account.totalSupply - pool.account.reserveToken, SOL_PRICE),
              

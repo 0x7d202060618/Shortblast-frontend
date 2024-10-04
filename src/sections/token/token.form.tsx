@@ -76,6 +76,7 @@ const defaultValues: Partial<FormSchema> = {
   ],
   icon: null,
   banner: null,
+  initialBuy: "0"
 };
 
 const TokenForm = () => {
@@ -136,7 +137,8 @@ const TokenForm = () => {
         program,
         publicKey,
         mintKeypair,
-        connection
+        connection,
+        Number(values.initialBuy)
       );
       if (!createTokenTransaction) throw new Error("Unable to send transaction");
 
@@ -171,7 +173,6 @@ const TokenForm = () => {
         type: "error",
         message: getErrorMessage(err),
       });
-      throw new Error(`Error while creating new token: ${getErrorMessage(err)}`);
     } finally {
       setLoading(false);
       toast.done(toastId);
