@@ -34,7 +34,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { cn, getErrorMessage } from "@/utils/functions";
 import TokenButton from "./token.button";
 import idl from "@/idl/solana_program.json";
-import { Image } from "@/components";
+import { Icon, Image } from "@/components";
 import { launchTokenTransaction } from "@/services/transactionServices";
 import { uploadImagePinata, uploadMetaData } from "@/utils/web3";
 import Notification from "@/components/Notification";
@@ -86,7 +86,7 @@ const TokenForm = () => {
     mode: "onChange",
   });
 
-  const { fields, append } = useFieldArray({
+  const { fields, append, remove } = useFieldArray({
     name: "urls",
     control: form.control,
   });
@@ -308,9 +308,27 @@ const TokenForm = () => {
                     <FormDescription className={cn(index !== 0 && "sr-only")}>
                       Add links to your website, blog, or social media profiles.
                     </FormDescription>
-                    <FormControl>
-                      <Input {...field} />
-                    </FormControl>
+                    <div className="flex gap-4">
+                      <FormControl>
+                        <Input {...field} />
+                      </FormControl>
+                      <Button
+                        variant="outline"
+                        size="icon"
+                        onClick={() => {
+                          if (fields.length <= 1) {
+                            Notification({
+                              type: "warn",
+                              message: "Please ensure that you include at least one website link.",
+                            });
+                            return;
+                          }
+                          remove(index);
+                        }}
+                      >
+                        <Icon name="trash" size={4} />
+                      </Button>
+                    </div>
                     <FormMessage />
                   </FormItem>
                 )}
