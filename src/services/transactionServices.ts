@@ -22,7 +22,8 @@ export const launchTokenTransaction = async (
   program: Program,
   launcherKey: PublicKey | null,
   mintKeypair: Keypair,
-  connection: Connection
+  connection: Connection,
+  initial_amount: number
 ) => {
   if (!launcherKey) return null;
   const transaction = await program.methods
@@ -45,7 +46,6 @@ export const launchTokenTransaction = async (
     })
     .transaction();
 
-  // Token Mint
   const associatedTokenAccountAddress = getAssociatedTokenAddressSync(
     mintKeypair.publicKey,
     launcherKey!
@@ -122,6 +122,26 @@ export const launchTokenTransaction = async (
       .instruction()
   );
 
+  const [curveConfig] = PublicKey.findProgramAddressSync(
+    [Buffer.from(CURVE_SEED)],
+    program.programId
+  );
+  transaction.add(await program.methods
+    .buy(convertToLamports(initial_amount))
+    .accounts({
+      dexConfigurationAccount: curveConfig,
+      pool: pool,
+      user: launcherKey,
+      tokenMint: mintKeypair.publicKey,
+      poolTokenAccount: pool_token_account,
+      poolSolVault: pool_sol_vault,
+      userTokenAccount: associatedTokenAccountAddress,
+      tokenProgram: TOKEN_PROGRAM_ID,
+      associatedTokenProgram: ASSOCIATED_TOKEN_PROGRAM_ID,
+      rent: SYSVAR_RENT_PUBKEY,
+      systemProgram: SystemProgram.programId,
+    })
+    .instruction());
   return transaction;
 };
 
