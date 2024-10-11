@@ -1,5 +1,5 @@
 {
-  "address": "BR9Fx1cBdY8Tt9JYvieh95gNgmVZT4zUNAsa4F5dZDEJ",
+  "address": "12o8fyrtvhq2ti3hKfX7BRBMCehU5BELNKE1NELMi5SB",
   "metadata": {
     "name": "solana_program",
     "version": "0.1.0",
@@ -1578,6 +1578,21 @@
       ]
     }
   ],
+  "events": [
+    {
+      "name": "BuyEvent",
+      "discriminator": [
+        103,
+        244,
+        82,
+        31,
+        44,
+        245,
+        119,
+        119
+      ]
+    }
+  ],
   "errors": [
     {
       "code": 6000,
@@ -1661,6 +1676,26 @@
     }
   ],
   "types": [
+    {
+      "name": "BuyEvent",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "reserve_sol",
+            "type": "u64"
+          },
+          {
+            "name": "reserve_token",
+            "type": "u64"
+          },
+          {
+            "name": "total_supply",
+            "type": "u64"
+          }
+        ]
+      }
+    },
     {
       "name": "CurveConfiguration",
       "type": {
