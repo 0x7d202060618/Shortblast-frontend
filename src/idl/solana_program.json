@@ -1,5 +1,5 @@
 {
-  "address": "12o8fyrtvhq2ti3hKfX7BRBMCehU5BELNKE1NELMi5SB",
+  "address": "SB8MfsHPFZEicQ4jdWkcgd4YeAenwkaN1j19PKnw86R",
   "metadata": {
     "name": "solana_program",
     "version": "0.1.0",
@@ -1580,16 +1580,16 @@
   ],
   "events": [
     {
-      "name": "BuyEvent",
+      "name": "PurchaseEvent",
       "discriminator": [
-        103,
-        244,
-        82,
-        31,
-        44,
-        245,
-        119,
-        119
+        229,
+        118,
+        246,
+        164,
+        59,
+        65,
+        116,
+        254
       ]
     }
   ],
@@ -1677,26 +1677,6 @@
   ],
   "types": [
     {
-      "name": "BuyEvent",
-      "type": {
-        "kind": "struct",
-        "fields": [
-          {
-            "name": "reserve_sol",
-            "type": "u64"
-          },
-          {
-            "name": "reserve_token",
-            "type": "u64"
-          },
-          {
-            "name": "total_supply",
-            "type": "u64"
-          }
-        ]
-      }
-    },
-    {
       "name": "CurveConfiguration",
       "type": {
         "kind": "struct",
@@ -1770,6 +1750,30 @@
           {
             "name": "token_mint",
             "type": "pubkey"
+          }
+        ]
+      }
+    },
+    {
+      "name": "PurchaseEvent",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "token_mint",
+            "type": "pubkey"
+          },
+          {
+            "name": "reserve_sol",
+            "type": "u64"
+          },
+          {
+            "name": "reserve_token",
+            "type": "u64"
+          },
+          {
+            "name": "total_supply",
+            "type": "u64"
           }
         ]
       }
