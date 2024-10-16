@@ -2609,26 +2609,12 @@
             "type": "u64"
           },
           {
-            "name": "token_price",
-            "type": "u64"
-          },
-          {
             "name": "bump",
             "type": "u8"
           },
           {
             "name": "created_at",
             "type": "i64"
-          },
-          {
-            "name": "borrow_info",
-            "type": {
-              "vec": {
-                "defined": {
-                  "name": "UserBorrow"
-                }
-              }
-            }
           }
         ]
       }
@@ -2645,26 +2631,6 @@
           {
             "name": "hourly_borrow_rate",
             "type": "f64"
-          }
-        ]
-      }
-    },
-    {
-      "name": "UserBorrow",
-      "type": {
-        "kind": "struct",
-        "fields": [
-          {
-            "name": "user",
-            "type": "pubkey"
-          },
-          {
-            "name": "token_amount",
-            "type": "u64"
-          },
-          {
-            "name": "sol_collateral",
-            "type": "u64"
           }
         ]
       }
