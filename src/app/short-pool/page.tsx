@@ -19,10 +19,10 @@ export default function ShortPoolPage() {
           <div className="w-full space-y-2 rounded-lg bg-white px-6 py-4 dark:bg-gray-800">
             <div className="flex items-center justify-between">
               <Text variant="md" className="text-black-700 dark:text-white-700 sm:text-sm">
-                You're paying
+                You're borrowing
               </Text>
               <div className="flex items-center space-x-1 sm:text-md text-sm">
-                <Label>Balance:</Label>
+                <Label>Available Balance:</Label>
                 <Label className="hover:underline cursor-pointer">
                   <TokenAmountNumber value={10000} />
                 </Label>
@@ -59,7 +59,7 @@ export default function ShortPoolPage() {
           <div className="w-full space-y-2 rounded-lg bg-white px-6 py-4 dark:bg-gray-800">
             <div className="flex items-center justify-between">
               <Text variant="md" className="text-black-700 dark:text-white-700 sm:text-sm">
-                To receive (estimated)
+                WIth Collateral (estimated)
               </Text>
               <div className="flex items-center space-x-1 sm:text-md text-sm">
                 <Label>Balance:</Label>
